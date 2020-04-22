@@ -1,16 +1,10 @@
 <template>
   <header class="header-global">
-    <!-- <div id="header">
-            <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
-                <h1 class="display-3  text-white">COVIVE</h1>
-            </router-link>
-        </div> -->
-    <base-nav class="navbar-main" transparent type="" effect="light" expand>
-            <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
-                <h4 class="display-3  text-white">COVIVE</h4>
-            </router-link>
-            
-        </base-nav>
+    <base-nav class="navbar-main" transparent type="" effect="light" expand="false">
+      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
+        <img src="../assets/img/covive.svg" alt="" />
+      </router-link>
+    </base-nav>
   </header>
 </template>
 <script>
@@ -29,5 +23,13 @@ export default {
 <style lang="scss" scoped>
 #header {
   display: flex;
+}
+
+.navbar-fixed-top {
+  overflow: hidden;
+  background-color: #5e72e470;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 </style>

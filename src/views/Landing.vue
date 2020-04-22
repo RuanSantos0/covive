@@ -5,14 +5,14 @@
       <section class="section-shaped my-0">
         <div class="shape shape-style-1 shape-default shape-skew">
           <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
         <div class="container shape-container d-flex">
           <div class="col px-0">
@@ -31,19 +31,29 @@
       </section>
       <!-- 1st Hero Variation -->
     </div>
-    <section>
-      <div class="row m-5 p-3 mt--200">
-        <div class="col-md-4 mb-4" v-for="(card, index) in cards" :key="index">
-          <card hover shadow body-classes="py-5">
-            <icon class="mb-2" :name="`fa fa-${card.icon}`" type="primary" rounded> </icon>
-            <h6 class="text-primary text-uppercase">
-              {{ card.title }}
-            </h6>
-            <p class="description mt-3">{{ card.description }}</p>
-            <base-button tag="a" :href="card.href" type="primary" class="mt-4">
-              Entrar
-            </base-button>
-          </card>
+    <section class="section container section-lg pt-lg-0 mt--200">
+      <div class="row row-grid">
+        <div class="col-lg-4 pb-4" v-for="(card, index) in cards" :key="index">
+          <div class="card border-0 card-lift--hover shadow">
+            <div class="card-body py-5">
+              <div
+                :class="
+                  `icon icon-shape mb-4 icon-shape-${card.color} rounded-circle`
+                "
+              >
+                <icon :name="`fa fa-${card.icon}`"> </icon>
+              </div>
+              <h6 class="text-primary text-uppercase">{{ card.title }}</h6>
+              <p class="description mt-3">{{ card.description }}</p>
+              <a
+                type=""
+                :class="`btn mt-4 btn-${card.color}`"
+                :href="card.href"
+              >
+                Ver Mais
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -60,37 +70,43 @@ export default {
           icon: "heartbeat",
           title: "SAÚDE",
           description: "teste",
-          href: "",
+          href: "#",
+          color: "primary",
         },
         {
-          icon: "handshake-o",
+          icon: "home",
           title: "ASSISTÊNCIA SOCIAL",
           description: "teste",
-          href: "",
+          href: "#",
+          color: "success",
         },
         {
-          icon: "id-card",
+          icon: "briefcase",
           title: "PREVIDÊNCIA SOCIAL E QUESTÕES TRABALHISTAS",
           description: "teste",
-          href: "",
+          href: "#",
+          color: "info",
         },
         {
-          icon: "balance-scale",
+          icon: "gavel",
           title: "SOCIOJURÍDICO",
           description: "teste",
-          href: "",
+          href: "#",
+          color: "danger",
         },
         {
-          icon: "bank",
+          icon: "info-circle",
           title: "NORMATIVAS/ORIENTAÇÕES",
           description: "teste",
-          href: "",
+          href: "#",
+          color: "default",
         },
         {
           icon: "users",
           title: "COLABORADORE(A)S",
           description: "teste",
-          href: "",
+          href: "#",
+          color: "warning",
         },
       ],
     };
@@ -98,13 +114,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.cards {
-  gap: 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-h6{
-  white-space: nowrap;    min-width: 150px;    overflow: hidden;   text-overflow: ellipsis;
+.card-body {
+  min-height: 330px;
 }
 </style>
