@@ -31,34 +31,19 @@
       </section>
       <!-- 1st Hero Variation -->
     </div>
-    <section class="section section-lg pt-lg-0 mt--200">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-12">
-            <div class="cards">
-              <card
-                class="border-0"
-                hover
-                shadow
-                body-classes="py-5"
-                v-for="(card, index) in cards"
-                :key="index"
-              >
-                <icon
-                  :name="`fa fa-${card.icon}`"
-                  type="primary"
-                  rounded
-                  class="mb-4"
-                >
-                </icon>
-                <h6 class="text-primary text-uppercase">{{card.title}}</h6>
-                <p class="description mt-3">{{card.description}}</p>
-                <base-button tag="a" :href="card.href" type="primary" class="mt-4">
-                  Learn more
-                </base-button>
-              </card>
-            </div>
-          </div>
+    <section>
+      <div class="row m-5 p-3 mt--200">
+        <div class="col-md-4 mb-4" v-for="(card, index) in cards" :key="index">
+          <card hover shadow body-classes="py-5">
+            <icon :name="`fa fa-${card.icon}`" type="primary" rounded> </icon>
+            <h6 class="text-primary text-uppercase">
+              {{ card.title }}
+            </h6>
+            <p class="description mt-3">{{ card.description }}</p>
+            <base-button tag="a" :href="card.href" type="primary" class="mt-4">
+              Learn more
+            </base-button>
+          </card>
         </div>
       </div>
     </section>
