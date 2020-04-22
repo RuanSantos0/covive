@@ -3,8 +3,8 @@
     <div class="position-relative">
       <!-- shape Hero -->
       <section class="section-shaped my-0">
-        <div class="shape shape-style-1 shape-default shape-skew">
-          <span></span>
+        <div class="shape shape-style-2 shape-default shape-skew">
+                    <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
@@ -31,19 +31,34 @@
       </section>
       <!-- 1st Hero Variation -->
     </div>
-    <section>
-      <div class="row m-5 p-3 mt--200">
-        <div class="col-md-4 mb-4" v-for="(card, index) in cards" :key="index">
-          <card hover shadow body-classes="py-5">
-            <icon class="mb-2" :name="`fa fa-${card.icon}`" type="primary" rounded> </icon>
-            <h6 class="text-primary text-uppercase">
-              {{ card.title }}
-            </h6>
-            <p class="description mt-3">{{ card.description }}</p>
-            <base-button tag="a" :href="card.href" type="primary" class="mt-4">
-              Entrar
-            </base-button>
-          </card>
+    <section class="section section-lg pt-lg-0 mt--200">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-12">
+            <div class="cards">
+              <card
+                class="border-0"
+                hover
+                shadow
+                body-classes="py-5"
+                v-for="(card, index) in cards"
+                :key="index"
+              >
+                <icon
+                  :name="`fa fa-${card.icon}`"
+                  type="primary"
+                  rounded
+                  class="mb-4"
+                >
+                </icon>
+                <h6 class="text-primary text-uppercase">{{card.title}}</h6>
+                <p class="description mt-3">{{card.description}}</p>
+                <base-button tag="a" :href="card.href" type="primary" class="mt-4">
+                  Entrar
+                </base-button>
+              </card>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -51,7 +66,7 @@
 </template>
 <script>
 export default {
-  name: "home",
+  name: "selecaoTipos",
   components: {},
   data() {
     return {
@@ -102,9 +117,5 @@ export default {
   gap: 20px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-}
-
-h6{
-  white-space: nowrap;    min-width: 150px;    overflow: hidden;   text-overflow: ellipsis;
 }
 </style>

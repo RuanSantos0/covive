@@ -112,7 +112,6 @@
   background-color: transparent; // remove default button style
   border: $border-width solid transparent; // remove default button style
   @include border-radius($navbar-toggler-border-radius);
-
   @include hover-focus {
     text-decoration: none;
   }
@@ -133,6 +132,7 @@
   content: "";
   background: no-repeat center center;
   background-size: 100% 100%;
+  display: none;
 }
 
 // Generate series of `.navbar-expand-*` responsive classes for configuring
