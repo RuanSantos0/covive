@@ -18,11 +18,9 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">A beautiful Design System</h1>
+                <h1 class="display-3  text-white">Titúlo</h1>
                 <p class="lead  text-white">
-                  The design system comes with four pre-built pages to help you
-                  get started faster. You can change the text and images and
-                  you're good to go.
+                  ---
                 </p>
               </div>
             </div>
@@ -70,7 +68,7 @@ export default {
           icon: "heartbeat",
           title: "SAÚDE",
           description: "teste",
-          href: "#",
+          href: "/subarea",
           color: "primary",
         },
         {
@@ -78,39 +76,43 @@ export default {
           title: "ASSISTÊNCIA SOCIAL",
           description: "teste",
           href: "#",
-          color: "success",
+          color: "primary",
         },
         {
           icon: "briefcase",
           title: "PREVIDÊNCIA SOCIAL E QUESTÕES TRABALHISTAS",
           description: "teste",
           href: "#",
-          color: "info",
+          color: "primary",
         },
-        {
-          icon: "gavel",
-          title: "SOCIOJURÍDICO",
-          description: "teste",
-          href: "#",
-          color: "danger",
-        },
-        {
-          icon: "info-circle",
-          title: "NORMATIVAS/ORIENTAÇÕES",
-          description: "teste",
-          href: "#",
-          color: "default",
-        },
-        {
-          icon: "users",
-          title: "COLABORADORE(A)S",
-          description: "teste",
-          href: "#",
-          color: "warning",
-        },
+        // {
+        //   icon: "gavel",
+        //   title: "SOCIOJURÍDICO",
+        //   description: "teste",
+        //   href: "#",
+        //   color: "primary",
+        // },
+        // {
+        //   icon: "info-circle",
+        //   title: "NORMATIVAS/ORIENTAÇÕES",
+        //   description: "teste",
+        //   href: "#",
+        //   color: "primary",
+        // },
+        // {
+        //   icon: "users",
+        //   title: "COLABORADORE(A)S",
+        //   description: "teste",
+        //   href: "#",
+        //   color: "primary",
+        // },
       ],
     };
   },
+  created(){
+    
+    // console.log(this.$route.params.id)
+  }
 };
 </script>
 <style lang="scss" scoped>
