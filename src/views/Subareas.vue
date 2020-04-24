@@ -53,16 +53,63 @@
             </div>
           </div>
         </div>
+        <div class="col-md-4 col-sm-12 col-12">
+          <base-button type="primary" @click="modals.modal = true"
+            >Nova Subárea</base-button
+          >
+          <modal
+            :show.sync="modals.modal"
+            body-classes="p-0"
+            modal-classes="modal-dialog-centered modal-sm"
+          >
+            <card
+              type="secondary"
+              shadow
+              header-classes="bg-white pb-5"
+              body-classes="px-lg-5 py-lg-5"
+              class="border-0"
+            >
+              <template>
+                <div class="text-muted text-center mb-3">
+                  <small>Nova Subárea</small>
+                </div>
+              </template>
+              <template>
+                <form role="form">
+                  <base-input alternative placeholder="Nome"> </base-input>
+                  <base-input alternative placeholder="Descrição"> </base-input>
+                  <div class="text-center">
+                    <base-button
+                      type="danger"
+                      class="my-4"
+                      @click="modals.modal = false"
+                      >Fechar</base-button
+                    >
+                    <base-button type="primary" class="my-4"
+                      >Salvar</base-button
+                    >
+                  </div>
+                </form>
+              </template>
+            </card>
+          </modal>
+        </div>
       </div>
     </section>
   </div>
 </template>
 <script>
+import Modal from "@/components/Modal.vue";
 export default {
   name: "home",
-  components: {},
+  components: {
+    Modal,
+  },
   data() {
     return {
+      modals: {
+        modal: false,
+      },
       cards: [
         {
           icon: "heartbeat",
@@ -109,10 +156,9 @@ export default {
       ],
     };
   },
-  created(){
-    
+  created() {
     // console.log(this.$route.params.id)
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
