@@ -31,16 +31,9 @@
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
       <div class="row row-grid">
-        <div class="col-lg-4 pb-4" v-for="(card, index) in cards" :key="index">
+        <div class="col-lg-4 pb-4" v-for="(card, index) in subareas" :key="index">
           <div class="card border-0 card-lift--hover shadow">
             <div class="card-body py-5">
-              <div
-                :class="
-                  `icon icon-shape mb-4 icon-shape-${card.color} rounded-circle`
-                "
-              >
-                <icon :name="`fa fa-${card.icon}`"> </icon>
-              </div>
               <h6 class="text-primary text-uppercase">{{ card.title }}</h6>
               <p class="description mt-3">{{ card.description }}</p>
               <a
@@ -76,8 +69,8 @@
               </template>
               <template>
                 <form role="form">
-                  <base-input alternative placeholder="Nome"> </base-input>
-                  <base-input alternative placeholder="Descrição"> </base-input>
+                  <base-input alternative placeholder="Nome" v-model="form.nome"> </base-input>
+                  <base-input alternative placeholder="Descrição" v-model="form.descricao"> </base-input>
                   <div class="text-center">
                     <base-button
                       type="danger"
@@ -101,7 +94,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 export default {
-  name: "home",
+  name: "Subareas",
   components: {
     Modal,
   },
@@ -110,54 +103,32 @@ export default {
       modals: {
         modal: false,
       },
-      cards: [
-        {
-          icon: "heartbeat",
-          title: "SAÚDE",
-          description: "teste",
-          href: "/subarea",
-          color: "primary",
-        },
-        {
-          icon: "home",
-          title: "ASSISTÊNCIA SOCIAL",
-          description: "teste",
-          href: "#",
-          color: "primary",
-        },
-        {
-          icon: "briefcase",
-          title: "PREVIDÊNCIA SOCIAL E QUESTÕES TRABALHISTAS",
-          description: "teste",
-          href: "#",
-          color: "primary",
-        },
-        // {
-        //   icon: "gavel",
-        //   title: "SOCIOJURÍDICO",
-        //   description: "teste",
-        //   href: "#",
-        //   color: "primary",
-        // },
-        // {
-        //   icon: "info-circle",
-        //   title: "NORMATIVAS/ORIENTAÇÕES",
-        //   description: "teste",
-        //   href: "#",
-        //   color: "primary",
-        // },
-        // {
-        //   icon: "users",
-        //   title: "COLABORADORE(A)S",
-        //   description: "teste",
-        //   href: "#",
-        //   color: "primary",
-        // },
-      ],
+      subareas: [],
+      form: {
+        nome: "",
+        descricao: "",
+      },
     };
   },
+  methods: {
+    async getSubareas() {
+      const request = new Service();
+      const resp = await request.getByParams({}, "subarea");
+      if (resp) {
+        this.subareas = resp;
+        console.log(resp);
+      }
+      
+    },
+    async createArea() {
+      const request = new Service();
+      console.log(this.form);
+      const response = await request.create(this.form, "subareas");
+      this.modals.modal = false;
+    },
+  },
   created() {
-    // console.log(this.$route.params.id)
+    console.log(this.$route.params)
   },
 };
 </script>

@@ -18,9 +18,9 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">Áreas</h1>
+                <h1 class="display-3  text-white">Titúlo</h1>
                 <p class="lead  text-white">
-                  --
+                  ---
                 </p>
               </div>
             </div>
@@ -31,24 +31,24 @@
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
       <div class="row row-grid">
-        <div class="col-lg-4 pb-4" v-for="(card, index) in areas" :key="index">
+        <div class="col-lg-4 pb-4" v-for="(card, index) in subareas" :key="index">
           <div class="card border-0 card-lift--hover shadow">
             <div class="card-body py-5">
-              <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
-              <p class="description mt-3">{{ card.descricao }}</p>
-              <router-link
-                slot="brand"
-                class="btn mt-4 btn-primary"
-                :to="`/subarea/${card.id}`"
+              <h6 class="text-primary text-uppercase">{{ card.title }}</h6>
+              <p class="description mt-3">{{ card.description }}</p>
+              <a
+                type=""
+                :class="`btn mt-4 btn-${card.color}`"
+                :href="card.href"
               >
-                Entrar
-              </router-link>
+                Ver Mais
+              </a>
             </div>
           </div>
         </div>
         <div class="col-md-4 col-sm-12 col-12">
           <base-button type="primary" @click="modals.modal = true"
-            >Nova Área</base-button
+            >Nova Subárea</base-button
           >
           <modal
             :show.sync="modals.modal"
@@ -64,23 +64,13 @@
             >
               <template>
                 <div class="text-muted text-center mb-3">
-                  <small>Nova Área</small>
+                  <small>Nova Subárea</small>
                 </div>
               </template>
               <template>
                 <form role="form">
-                  <base-input
-                    alternative
-                    placeholder="Nome"
-                    v-model="form.nome"
-                  >
-                  </base-input>
-                  <base-input
-                    alternative
-                    placeholder="Descrição"
-                    v-model="form.descricao"
-                  >
-                  </base-input>
+                  <base-input alternative placeholder="Nome" v-model="form.nome"> </base-input>
+                  <base-input alternative placeholder="Descrição" v-model="form.descricao"> </base-input>
                   <div class="text-center">
                     <base-button
                       type="danger"
@@ -88,10 +78,7 @@
                       @click="modals.modal = false"
                       >Fechar</base-button
                     >
-                    <base-button
-                      type="primary"
-                      class="my-4"
-                      @click="createArea()"
+                    <base-button type="primary" class="my-4"
                       >Salvar</base-button
                     >
                   </div>
@@ -104,12 +91,10 @@
     </section>
   </div>
 </template>
-
 <script>
 import Modal from "@/components/Modal.vue";
-import Service from "@/services/ApiServices.js";
 export default {
-  name: "home",
+  name: "formSubareas",
   components: {
     Modal,
   },
@@ -118,32 +103,15 @@ export default {
       modals: {
         modal: false,
       },
-      areas: [],
+      subareas: [],
       form: {
         nome: "",
         descricao: "",
       },
     };
   },
-  methods: {
-    async getAreas() {
-      const request = new Service();
-      const resp = await request.getByParams({}, "areas");
-      if (resp) {
-        this.areas = resp;
-        console.log(resp);
-      }
-      
-    },
-    async createArea() {
-      const request = new Service();
-      console.log(this.form);
-      const response = await request.create(this.form, "areas");
-      this.modals.modal = false;
-    },
-  },
   created() {
-    this.getAreas();
+    // console.log(this.$route.params.id)
   },
 };
 </script>

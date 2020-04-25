@@ -8,6 +8,7 @@ import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Profile from "./views/Profile.vue";
 import Subareas from "./views/Subareas.vue";
+import FormSubareas from "./views/FormSubareas.vue"
 import Colaboradores from "./views/Colaboradores.vue";
 
 Vue.use(Router);
@@ -66,6 +67,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Subareas,
+        footer: AppFooter,
+      },
+    },
+    {
+      path: "/formsubarea/:id",
+      name: "formsubarea",
+      components: {
+        header: AppHeader,
+        default: FormSubareas,
         footer: AppFooter,
       },
     },
