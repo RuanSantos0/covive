@@ -40,7 +40,7 @@
             <div class="card-body py-5">
               <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
               <p class="description mt-3">{{ card.descricao }}</p>
-              <a type="" :class="`btn mt-4 btn-primary`" href="/formsubarea">
+              <a type="" :class="`btn mt-4 btn-primary`" href="/subsubareas">
                 Entrar
               </a>
             </div>

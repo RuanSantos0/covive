@@ -63,14 +63,14 @@ export default {
           url: "#"
             
         },
-        {
-          src: "ifce-logo.png",
-          title: "IFCE",
-          description:
-            "Instituto Federal de Educação, Ciência e Tecnologia do Ceará",
-           url: "#"
+        // {
+        //   src: "ifce-logo.png",
+        //   title: "IFCE",
+        //   description:
+        //     "Instituto Federal de Educação, Ciência e Tecnologia do Ceará",
+        //    url: "#"
         
-        },
+        // },
       ],
       year: new Date().getFullYear(),
     };

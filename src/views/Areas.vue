@@ -122,7 +122,7 @@ export default {
     setHref(cards = []) {
       for (let item of cards) {
         if (item.nome === "COLABORADORE(A)S") item.href = "/colaboradores";
-        else item.href = `/subareas/${item.id}`;
+        else item.href = `/subarea/${item.id}`;
       }
     },
     async getAreas() {
@@ -138,6 +138,7 @@ export default {
       console.log(this.form);
       const response = await request.create(this.form, "areas");
       this.modals.modal = false;
+      this.getAreas();
     },
   },
   created() {

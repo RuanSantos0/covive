@@ -17,8 +17,8 @@
       </div>
       
         <base-button type="white" v-if="showbtn">
-          <router-link to="/register">
-            Cadastrar
+          <router-link to="/login">
+            Login
           </router-link>
         </base-button>
       
