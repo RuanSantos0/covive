@@ -18,7 +18,7 @@
 
 
         <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
-        <span class="input-group-text">
+        <span class="input-group-text" @click="click">
           <slot name="addonLeft">
             <i :class="addonLeftIcon"></i>
           </slot>
@@ -34,7 +34,7 @@
                     aria-describedby="addon-right addon-left">
         </slot>
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
-          <span class="input-group-text">
+          <span class="input-group-text" @click="click">
               <slot name="addonRight">
                   <i :class="addonRightIcon"></i>
               </slot>
@@ -126,6 +126,10 @@ export default {
     }
   },
   methods: {
+    click() {
+      alert("Click")
+      this.$emit("click")
+    },
     updateValue(evt) {
       let value = evt.target.value;
       this.$emit("input", value);
