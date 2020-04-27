@@ -10,6 +10,7 @@ import Profile from "./views/Profile.vue";
 import Subareas from "./views/Subareas.vue";
 import SubSubareas from "./views/SubSubareas.vue"
 import Colaboradores from "./views/Colaboradores.vue";
+import CustomForm from "./views/CustomForm.vue"
 
 Vue.use(Router);
 
@@ -88,6 +89,15 @@ export default new Router({
         footer: AppFooter,
       },
     },
+    {
+      path: '/customform',
+      name: 'Custom Form',
+      components: {
+        header: AppHeader,
+        default: CustomForm,
+        footer: AppFooter
+      }
+    }
   ],
   scrollBehavior: (to) => {
     if (to.hash) {
