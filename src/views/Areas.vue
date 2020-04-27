@@ -39,67 +39,60 @@
               <router-link
                 slot="brand"
                 class="btn mt-4 btn-primary"
-                :to="`/subarea/${card.id}`"
+                :to="`/${card.href}/${card.id}`"
               >
                 Entrar
               </router-link>
             </div>
           </div>
         </div>
-        <div class="col-md-4 col-sm-12 col-12">
-          <base-button type="primary" @click="modals.modal = true"
-            >Nova Área</base-button
+      </div>
+      <div class="col-md-4 col-sm-12 col-12">
+        <base-button type="primary" @click="modals.modal = true"
+          >Nova Área</base-button
+        >
+        <modal
+          :show.sync="modals.modal"
+          body-classes="p-0"
+          modal-classes="modal-dialog-centered modal-sm"
+        >
+          <card
+            type="secondary"
+            shadow
+            header-classes="bg-white pb-5"
+            body-classes="px-lg-5 py-lg-5"
+            class="border-0"
           >
-          <modal
-            :show.sync="modals.modal"
-            body-classes="p-0"
-            modal-classes="modal-dialog-centered modal-sm"
-          >
-            <card
-              type="secondary"
-              shadow
-              header-classes="bg-white pb-5"
-              body-classes="px-lg-5 py-lg-5"
-              class="border-0"
-            >
-              <template>
-                <div class="text-muted text-center mb-3">
-                  <small>Nova Área</small>
+            <template>
+              <div class="text-muted text-center mb-3">
+                <small>Nova Área</small>
+              </div>
+            </template>
+            <template>
+              <form role="form">
+                <base-input alternative placeholder="Nome" v-model="form.nome">
+                </base-input>
+                <base-input
+                  alternative
+                  placeholder="Descrição"
+                  v-model="form.descricao"
+                >
+                </base-input>
+                <div class="text-center">
+                  <base-button
+                    type="danger"
+                    class="my-4"
+                    @click="modals.modal = false"
+                    >Fechar</base-button
+                  >
+                  <base-button type="primary" class="my-4" @click="createArea()"
+                    >Salvar</base-button
+                  >
                 </div>
-              </template>
-              <template>
-                <form role="form">
-                  <base-input
-                    alternative
-                    placeholder="Nome"
-                    v-model="form.nome"
-                  >
-                  </base-input>
-                  <base-input
-                    alternative
-                    placeholder="Descrição"
-                    v-model="form.descricao"
-                  >
-                  </base-input>
-                  <div class="text-center">
-                    <base-button
-                      type="danger"
-                      class="my-4"
-                      @click="modals.modal = false"
-                      >Fechar</base-button
-                    >
-                    <base-button
-                      type="primary"
-                      class="my-4"
-                      @click="createArea()"
-                      >Salvar</base-button
-                    >
-                  </div>
-                </form>
-              </template>
-            </card>
-          </modal>
-        </div>
+              </form>
+            </template>
+          </card>
+        </modal>
       </div>
     </section>
   </div>
@@ -126,6 +119,12 @@ export default {
     };
   },
   methods: {
+    setHref(cards = []) {
+      for (item  of cards) {
+        if (item.nome === "COLABORADORE(A)S") item.href = "colaboradores";
+        else item.href = "subareas";
+      }
+    },
     async getAreas() {
       const request = new Service();
       const resp = await request.getByParams({}, "areas");
@@ -133,7 +132,7 @@ export default {
         this.areas = resp;
         console.log(resp);
       }
-      
+      setHref(this.areas);
     },
     async createArea() {
       const request = new Service();

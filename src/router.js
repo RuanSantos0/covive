@@ -63,7 +63,6 @@ export default new Router({
     },
     {
       path: "/subarea/:id",
-      props: {nome: "",descricao: ""},
       name: "subarea",
       components: {
         header: AppHeader,

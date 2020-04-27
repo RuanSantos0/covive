@@ -46,7 +46,8 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4 col-sm-12 col-12">
+      </div>
+      <div class="col-md-4 col-sm-12 col-12">
           <base-button type="primary" @click="modals.modal = true"
             >Nova Subárea</base-button
           >
@@ -97,7 +98,6 @@
             </card>
           </modal>
         </div>
-      </div>
     </section>
   </div>
 </template>

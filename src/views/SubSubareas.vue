@@ -31,7 +31,11 @@
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
       <div class="row row-grid">
-        <div class="col-lg-4 pb-4" v-for="(card, index) in subareas" :key="index">
+        <div
+          class="col-lg-4 pb-4"
+          v-for="(card, index) in subsubareas"
+          :key="index"
+        >
           <div class="card border-0 card-lift--hover shadow">
             <div class="card-body py-5">
               <h6 class="text-primary text-uppercase">{{ card.title }}</h6>
@@ -46,47 +50,51 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4 col-sm-12 col-12">
-          <base-button type="primary" @click="modals.modal = true"
-            >Nova Subárea</base-button
+      </div>
+      <div class="col-md-4 col-sm-12 col-12">
+        <base-button type="primary" @click="modals.modal = true"
+          >Nova Subsubárea</base-button
+        >
+        <modal
+          :show.sync="modals.modal"
+          body-classes="p-0"
+          modal-classes="modal-dialog-centered modal-sm"
+        >
+          <card
+            type="secondary"
+            shadow
+            header-classes="bg-white pb-5"
+            body-classes="px-lg-5 py-lg-5"
+            class="border-0"
           >
-          <modal
-            :show.sync="modals.modal"
-            body-classes="p-0"
-            modal-classes="modal-dialog-centered modal-sm"
-          >
-            <card
-              type="secondary"
-              shadow
-              header-classes="bg-white pb-5"
-              body-classes="px-lg-5 py-lg-5"
-              class="border-0"
-            >
-              <template>
-                <div class="text-muted text-center mb-3">
-                  <small>Nova Subárea</small>
+            <template>
+              <div class="text-muted text-center mb-3">
+                <small>Nova Subsubárea</small>
+              </div>
+            </template>
+            <template>
+              <form role="form">
+                <base-input alternative placeholder="Nome" v-model="form.nome">
+                </base-input>
+                <base-input
+                  alternative
+                  placeholder="Descrição"
+                  v-model="form.descricao"
+                >
+                </base-input>
+                <div class="text-center">
+                  <base-button
+                    type="danger"
+                    class="my-4"
+                    @click="modals.modal = false"
+                    >Fechar</base-button
+                  >
+                  <base-button type="primary" class="my-4">Salvar</base-button>
                 </div>
-              </template>
-              <template>
-                <form role="form">
-                  <base-input alternative placeholder="Nome" v-model="form.nome"> </base-input>
-                  <base-input alternative placeholder="Descrição" v-model="form.descricao"> </base-input>
-                  <div class="text-center">
-                    <base-button
-                      type="danger"
-                      class="my-4"
-                      @click="modals.modal = false"
-                      >Fechar</base-button
-                    >
-                    <base-button type="primary" class="my-4"
-                      >Salvar</base-button
-                    >
-                  </div>
-                </form>
-              </template>
-            </card>
-          </modal>
-        </div>
+              </form>
+            </template>
+          </card>
+        </modal>
       </div>
     </section>
   </div>
@@ -103,15 +111,75 @@ export default {
       modals: {
         modal: false,
       },
-      subareas: [],
+      subsubareas: [],
+      subareaAtual: [],
       form: {
         nome: "",
         descricao: "",
       },
     };
   },
+  methods: {
+
+    getAreaAtual() {
+      const request = axios.create();
+      const baseUrl = "http://localhost:3333";
+      request
+        .get(`${baseUrl}/areas/id/subareas`, {
+          headers: { subarea_id: this.$route.params.id },
+        })
+        .then((res) => {
+          this.areaAtual = res.data;
+          console.log(this.areaAtual);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    },
+    getSubsubareas() {
+      const request = axios.create();
+      const baseUrl = "http://localhost:3333";
+      request
+        .get(`${baseUrl}/areas/id/subareas/subsubareas`, {
+          headers: { subarea_id: this.$route.params.id },
+        })
+        .then((res) => {
+          this.subsubareas = res.data;
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+
+      // const resp = await request.getByParams({}, "areas/id/subareas", {
+      //   headers: { area_id: this.$route.params.id },
+      // });
+      // if (resp) {
+      //   this.subareas = resp;
+      //   console.log(resp);
+      // }
+    },
+
+    createArea() {
+      const request = axios.create();
+      const baseUrl = "http://localhost:3333";
+      request
+        .post(`${baseUrl}/areas/id/subareas/subsubareas`, this.form, {
+          headers: { subarea_id: this.$route.params.id },
+        })
+        .then((res) => {
+          this.modals.modal = false;
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+
+      console.log(this.form);
+      // const response = await request.create(this.form, "subareas");
+      // this.modals.modal = false;
+    },
+  },
   created() {
-    // console.log(this.$route.params.id)
+    console.log(this.$route.params.id);
   },
 };
 </script>
