@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     setHref(cards = []) {
-      for (item  of cards) {
+      for (let item of cards) {
         if (item.nome === "COLABORADORE(A)S") item.href = "colaboradores";
         else item.href = "subareas";
       }
@@ -130,9 +130,8 @@ export default {
       const resp = await request.getByParams({}, "areas");
       if (resp) {
         this.areas = resp;
-        console.log(resp);
+        this.setHref(this.areas);
       }
-      setHref(this.areas);
     },
     async createArea() {
       const request = new Service();
