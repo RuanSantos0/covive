@@ -122,7 +122,7 @@ export default {
     setHref(cards = []) {
       for (let item of cards) {
         if (item.nome === "COLABORADORE(A)S") item.href = "/colaboradores";
-        else item.href = `/subareas/${card.id}`;
+        else item.href = `/subareas/${item.id}`;
       }
     },
     async getAreas() {
