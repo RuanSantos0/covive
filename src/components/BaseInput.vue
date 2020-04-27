@@ -127,7 +127,6 @@ export default {
   },
   methods: {
     click() {
-      alert("Click")
       this.$emit("click")
     },
     updateValue(evt) {
