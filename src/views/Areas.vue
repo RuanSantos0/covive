@@ -39,7 +39,7 @@
               <router-link
                 slot="brand"
                 class="btn mt-4 btn-primary"
-                :to="`/${card.href}/${card.id}`"
+                :to="card.href"
               >
                 Entrar
               </router-link>
@@ -121,8 +121,8 @@ export default {
   methods: {
     setHref(cards = []) {
       for (let item of cards) {
-        if (item.nome === "COLABORADORE(A)S") item.href = "colaboradores";
-        else item.href = "subareas";
+        if (item.nome === "COLABORADORE(A)S") item.href = "/colaboradores";
+        else item.href = `/subareas/${card.id}`;
       }
     },
     async getAreas() {
