@@ -128,6 +128,7 @@ export default {
     async getAreas() {
       const request = new Service();
       const resp = await request.getByParams({}, "areas");
+      console.log(this.$router)
       if (resp) {
         this.areas = resp;
         this.setHref(this.areas);

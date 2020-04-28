@@ -40,9 +40,16 @@
             <div class="card-body py-5">
               <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
               <p class="description mt-3">{{ card.descricao }}</p>
-              <a type="" :class="`btn mt-4 btn-primary`" href="/subsubareas">
+              <button
+                slot="brand"
+                class="btn mt-4 btn-primary"
+                @click="goToView(card)"
+              >
                 Entrar
-              </a>
+              </button>
+              <!-- <a type="" :class="`btn mt-4 btn-primary`" href="/subsubareas">
+                Entrar
+              </a> -->
             </div>
           </div>
         </div>
@@ -89,7 +96,7 @@
                       @click="modals.modal = false"
                       >Fechar</base-button
                     >
-                    <base-button type="primary" class="my-4" @click="createArea()"
+                    <base-button type="primary" class="my-4" @click="createSubarea()"
                       >Salvar</base-button
                     >
                   </div>
@@ -124,6 +131,17 @@ export default {
     };
   },
   methods: {
+    goToView(card) {
+      console.log(card)
+      console.log(this.$route.params.id)
+      this.$router.push({
+        name: "subsubareas",
+        id: card.id,
+        params: {
+          area: this.$route.params.id
+        }
+      });
+    },
     getAreaAtual(){
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
@@ -147,6 +165,7 @@ export default {
         })
         .then( res => {
           this.subareas = res.data;
+          console.log(this.subareas)
         }).catch(err => {
           console.log("error");
         });
@@ -160,7 +179,7 @@ export default {
       // }
     },
 
-    createArea() {
+    createSubarea() {
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
       request
@@ -168,7 +187,9 @@ export default {
           headers: { area_id: this.$route.params.id },
         })
         .then( res => {
+          console.log('entrou');
           this.modals.modal = false;
+          this.getSubareas();
         }).catch(err => {
           console.log("error");
         });

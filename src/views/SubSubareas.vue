@@ -38,15 +38,15 @@
         >
           <div class="card border-0 card-lift--hover shadow">
             <div class="card-body py-5">
-              <h6 class="text-primary text-uppercase">{{ card.title }}</h6>
-              <p class="description mt-3">{{ card.description }}</p>
-              <a
-                type=""
-                :class="`btn mt-4 btn-${card.color}`"
-                :href="card.href"
+              <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
+              <p class="description mt-3">{{ card.descricao }}</p>
+              <router-link
+                slot="brand"
+                class="btn mt-4 btn-primary"
+                :to="`/subsubareas/${card.id}`"
               >
-                Ver Mais
-              </a>
+                Entrar
+              </router-link>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@
                     @click="modals.modal = false"
                     >Fechar</base-button
                   >
-                  <base-button type="primary" class="my-4">Salvar</base-button>
+                  <base-button type="primary" class="my-4" @click="createSubsubArea()">Salvar</base-button>
                 </div>
               </form>
             </template>
@@ -101,6 +101,7 @@
 </template>
 <script>
 import Modal from "@/components/Modal.vue";
+import axios from "axios";
 export default {
   name: "formSubareas",
   components: {
@@ -112,7 +113,7 @@ export default {
         modal: false,
       },
       subsubareas: [],
-      subareaAtual: [],
+      areaAtual: [],
       form: {
         nome: "",
         descricao: "",
@@ -121,30 +122,31 @@ export default {
   },
   methods: {
 
-    getAreaAtual() {
-      const request = axios.create();
-      const baseUrl = "http://localhost:3333";
-      request
-        .get(`${baseUrl}/areas/id/subareas`, {
-          headers: { subarea_id: this.$route.params.id },
-        })
-        .then((res) => {
-          this.areaAtual = res.data;
-          console.log(this.areaAtual);
-        })
-        .catch((err) => {
-          console.log("error");
-        });
-    },
+    // getAreaAtual() {
+    //   const request = axios.create();
+    //   const baseUrl = "http://localhost:3333";
+    //   request
+    //     .get(`${baseUrl}/areas/id/subareas/id`, {
+    //       headers: { area_id: this.$route.params.id, subarea_id: this.$route.params.id },
+    //     })
+    //     .then((res) => {
+    //       this.areaAtual = res.data;
+    //       console.log(this.areaAtual);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err,"error");
+    //     });
+    // },
     getSubsubareas() {
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
       request
-        .get(`${baseUrl}/areas/id/subareas/subsubareas`, {
+        .get(`${baseUrl}/subareas/id/subsubareas`, {
           headers: { subarea_id: this.$route.params.id },
         })
         .then((res) => {
           this.subsubareas = res.data;
+          console.log(this.subsubareas)
         })
         .catch((err) => {
           console.log("error");
@@ -159,15 +161,16 @@ export default {
       // }
     },
 
-    createArea() {
+    createSubsubArea() {
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
       request
-        .post(`${baseUrl}/areas/id/subareas/subsubareas`, this.form, {
+        .post(`${baseUrl}/subareas/id/subsubareas`, this.form, {
           headers: { subarea_id: this.$route.params.id },
         })
         .then((res) => {
           this.modals.modal = false;
+          this.getSubsubareas();
         })
         .catch((err) => {
           console.log("error");
@@ -179,7 +182,9 @@ export default {
     },
   },
   created() {
-    console.log(this.$route.params.id);
+    // this.getAreaAtual()
+    this.getSubsubareas()
+    console.log(this.$route.params);
   },
 };
 </script>
