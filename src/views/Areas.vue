@@ -48,7 +48,10 @@
         </div>
       </div>
       <div class="col-md-4 col-sm-12 col-12">
-        <base-button type="primary" @click="modals.modal = true"
+        <base-button
+          v-show="showButtonSave"
+          type="primary"
+          @click="modals.modal = true"
           >Nova Área</base-button
         >
         <modal
@@ -101,6 +104,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import Service from "@/services/ApiServices.js";
+import axios from "axios";
 export default {
   name: "home",
   components: {
@@ -118,6 +122,12 @@ export default {
       },
     };
   },
+  computed: {
+    showButtonSave() {
+      let res = localStorage.getItem("user-token");
+      return !!res;
+    },
+  },
   methods: {
     setHref(cards = []) {
       for (let item of cards) {
@@ -128,18 +138,29 @@ export default {
     async getAreas() {
       const request = new Service();
       const resp = await request.getByParams({}, "areas");
-      console.log(this.$router)
       if (resp) {
         this.areas = resp;
         this.setHref(this.areas);
       }
     },
-    async createArea() {
-      const request = new Service();
+    createArea() {
+      const request = axios.create();
+      const baseUrl = "http://localhost:3333";
+      request
+        .post(`${baseUrl}/areas`, this.form, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
+        })
+        .then((res) => {
+          this.modals.modal = false;
+          this.getSubareas();
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+
       console.log(this.form);
-      const response = await request.create(this.form, "areas");
-      this.modals.modal = false;
-      this.getAreas();
     },
   },
   created() {

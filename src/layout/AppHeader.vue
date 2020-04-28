@@ -15,12 +15,17 @@
           <close-button @click="closeMenu"></close-button>
         </div>
       </div>
-      
-        <base-button type="white" v-if="showbtn">
+      <div>
+        <base-button type="white" v-show="showbtn && !verificaToken">
           <router-link to="/login">
             Login
           </router-link>
         </base-button>
+        <base-button @click="clearAll" type="white" v-show="showbtn && verificaToken">
+           Logout
+        </base-button>
+      </div>
+      
       
     </base-nav>
   </header>
@@ -36,10 +41,33 @@ export default {
     CloseButton,
     BaseDropdown,
   },
+  data(){
+    return{
+      logado: null
+    }
+  },
+  mounted(){
+    console.log("montado")
+    this.logado = localStorage.getItem('user-token');
+  },
+  updated(){
+    console.log("upsdate")
+    this.logado = localStorage.getItem('user-token');
+  },
+  methods: {
+    clearAll(){
+      localStorage.clear();
+      this.logado = localStorage.getItem('user-token');
+    }
+ 
+  },
   computed: {
+    verificaToken(){
+      return this.logado || false;
+    },
     showbtn() {
       const rota = this.$route.name;
-      if (rota === "register") {
+      if (rota === "login") {
         return false;
       }
       return true;
@@ -61,5 +89,9 @@ export default {
   top: 0;
   width: 100%;
 
+}
+
+#btnLogout{
+  color:blue;
 }
 </style>

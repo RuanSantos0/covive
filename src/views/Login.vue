@@ -21,19 +21,24 @@
                             <div class="text-center text-muted mb-4">
                                 <h5>Login</h5>
                             </div>
+                            <small v-if="showMessage" class="infoError">Login e senha incorretos</small>
                             <form role="form">
-                                <base-input alternative
-                                            class="mb-3"
-                                            placeholder="Email"
-                                            addon-left-icon="ni ni-email-83">
+                                <base-input 
+                                    v-model="model.email"
+                                    alternative
+                                    class="mb-3"
+                                    placeholder="Email"
+                                    addon-left-icon="ni ni-email-83">
                                 </base-input>
-                                <base-input alternative
-                                            type="password"
-                                            placeholder="Password"
-                                            addon-left-icon="ni ni-lock-circle-open">
+                                <base-input
+                                    v-model="model.senha" 
+                                    alternative
+                                    type="password"
+                                    placeholder="Password"
+                                    addon-left-icon="ni ni-lock-circle-open">
                                 </base-input>
                                 <div class="text-center">
-                                    <base-button type="primary" class="my-4">Entrar</base-button>
+                                    <base-button @click.prevent="login" type="primary" class="my-4">Entrar</base-button>
                                 </div>
                             </form>
                         </template>
@@ -44,7 +49,39 @@
     </section>
 </template>
 <script>
-export default {};
+import axios from 'axios'
+export default {
+    data(){
+        return{
+            showMessage:false,
+            model: {email: '',senha:''}
+        }
+    },
+    created(){
+      
+    },
+    mounted(){},
+    methods: {
+        login(){
+            this.showMessage = false;
+                
+            const request = axios.create({baseURL: 'http://localhost:3333'})
+            request.post('/sessions', this.model).then(res => {
+                localStorage.setItem("user-token", res.data.token)
+                localStorage.setItem("user-data", JSON.stringify(res.data.user))
+                this.$router.push('/')
+            }).catch(e => {
+                this.showMessage = true;
+            })
+                
+            
+        }
+    }
+};
 </script>
 <style>
+.infoError{
+    color: red;
+    text-align:center
+}
 </style>

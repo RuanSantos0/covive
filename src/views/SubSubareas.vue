@@ -18,9 +18,9 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">Titúlo</h1>
+                <h1 class="display-3  text-white">{{this.subAreaAtual.nome}}</h1>
                 <p class="lead  text-white">
-                  ---
+                  {{this.subAreaAtual.descricao}}
                 </p>
               </div>
             </div>
@@ -40,13 +40,13 @@
             <div class="card-body py-5">
               <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
               <p class="description mt-3">{{ card.descricao }}</p>
-              <router-link
+              <button
                 slot="brand"
                 class="btn mt-4 btn-primary"
-                :to="`/subsubareas/${card.id}`"
+                @click="goToFormularios(card)"
               >
                 Entrar
-              </router-link>
+              </button>
             </div>
           </div>
         </div>
@@ -89,7 +89,12 @@
                     @click="modals.modal = false"
                     >Fechar</base-button
                   >
-                  <base-button type="primary" class="my-4" @click="createSubsubArea()">Salvar</base-button>
+                  <base-button
+                    type="primary"
+                    class="my-4"
+                    @click="createSubsubArea()"
+                    >Salvar</base-button
+                  >
                 </div>
               </form>
             </template>
@@ -113,7 +118,7 @@ export default {
         modal: false,
       },
       subsubareas: [],
-      areaAtual: [],
+      subAreaAtual: [{nome:"",descricao:""}],
       form: {
         nome: "",
         descricao: "",
@@ -121,22 +126,33 @@ export default {
     };
   },
   methods: {
-
-    // getAreaAtual() {
-    //   const request = axios.create();
-    //   const baseUrl = "http://localhost:3333";
-    //   request
-    //     .get(`${baseUrl}/areas/id/subareas/id`, {
-    //       headers: { area_id: this.$route.params.id, subarea_id: this.$route.params.id },
-    //     })
-    //     .then((res) => {
-    //       this.areaAtual = res.data;
-    //       console.log(this.areaAtual);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err,"error");
-    //     });
-    // },
+        goToFormularios(card) {
+      this.$router.push({
+        name: "formularios",
+        params: {
+          area: this.$route.params.id,
+          id: card.id,
+        }
+      });
+    },
+    getSubAreaAtual() {
+      const request = axios.create();
+      const baseUrl = "http://localhost:3333";
+      request
+        .get(`${baseUrl}/areas/id/subareas/id`, {
+          headers: {
+            area_id: this.$route.params.area,
+            subarea_id: this.$route.params.id,
+          },
+        })
+        .then((res) => {
+          this.subAreaAtual = res.data;
+          console.log("Subarea", this.subAreaAtual);
+        })
+        .catch((err) => {
+          console.log(err, "error");
+        });
+    },
     getSubsubareas() {
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
@@ -146,7 +162,7 @@ export default {
         })
         .then((res) => {
           this.subsubareas = res.data;
-          console.log(this.subsubareas)
+          console.log(this.subsubareas);
         })
         .catch((err) => {
           console.log("error");
@@ -182,9 +198,9 @@ export default {
     },
   },
   created() {
-    // this.getAreaAtual()
-    this.getSubsubareas()
-    console.log(this.$route.params);
+    this.getSubAreaAtual();
+    this.getSubsubareas();
+    console.log("Params", this.$route.params);
   },
 };
 </script>

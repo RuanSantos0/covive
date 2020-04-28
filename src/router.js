@@ -10,6 +10,7 @@ import Profile from "./views/Profile.vue";
 import Subareas from "./views/Subareas.vue";
 import SubSubareas from "./views/SubSubareas.vue"
 import Colaboradores from "./views/Colaboradores.vue";
+import Formularios from "./views/Formularios.vue"
 import CustomForm from "./views/CustomForm.vue"
 
 Vue.use(Router);
@@ -77,6 +78,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: SubSubareas,
+        footer: AppFooter,
+      },
+    },
+    {
+      path: "/formularios/:id",
+      name: "formularios",
+      components: {
+        header: AppHeader,
+        default: Formularios,
         footer: AppFooter,
       },
     },

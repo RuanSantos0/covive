@@ -43,7 +43,7 @@
               <button
                 slot="brand"
                 class="btn mt-4 btn-primary"
-                @click="goToView(card)"
+                @click="goToSubsubareas(card)"
               >
                 Entrar
               </button>
@@ -131,14 +131,12 @@ export default {
     };
   },
   methods: {
-    goToView(card) {
-      console.log(card)
-      console.log(this.$route.params.id)
+    goToSubsubareas(card) {
       this.$router.push({
         name: "subsubareas",
-        id: card.id,
         params: {
-          area: this.$route.params.id
+          area: this.$route.params.id,
+          id: card.id,
         }
       });
     },
@@ -147,11 +145,11 @@ export default {
       const baseUrl = "http://localhost:3333";
       request
         .get(`${baseUrl}/areas/id`, {
-          headers: { area_id: this.$route.params.id },
+          headers: { area_id:  this.$route.params.id},
         })
         .then( res => {
           this.areaAtual = res.data;
-          console.log(this.areaAtual);
+          console.log("Area",this.areaAtual);
         }).catch(err => {
           console.log("error");
         });
@@ -169,14 +167,6 @@ export default {
         }).catch(err => {
           console.log("error");
         });
-
-      // const resp = await request.getByParams({}, "areas/id/subareas", {
-      //   headers: { area_id: this.$route.params.id },
-      // });
-      // if (resp) {
-      //   this.subareas = resp;
-      //   console.log(resp);
-      // }
     },
 
     createSubarea() {
@@ -187,23 +177,19 @@ export default {
           headers: { area_id: this.$route.params.id },
         })
         .then( res => {
-          console.log('entrou');
           this.modals.modal = false;
           this.getSubareas();
         }).catch(err => {
           console.log("error");
         });
 
-
       console.log(this.form);
-      // const response = await request.create(this.form, "subareas");
-      // this.modals.modal = false;
     },
   },
   created() {
+    
     this.getSubareas();
     this.getAreaAtual();
-    console.log(this.$route.params.id);
   },
 };
 </script>
