@@ -154,7 +154,7 @@ export default {
         })
         .then((res) => {
           this.modals.modal = false;
-          this.getSubareas();
+          this.getAreas();
         })
         .catch((err) => {
           console.log("error");

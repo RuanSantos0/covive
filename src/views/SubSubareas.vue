@@ -18,9 +18,11 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">{{this.subAreaAtual.nome}}</h1>
+                <h1 class="display-3  text-white">
+                  {{ this.subAreaAtual.nome }}
+                </h1>
                 <p class="lead  text-white">
-                  {{this.subAreaAtual.descricao}}
+                  {{ this.subAreaAtual.descricao }}
                 </p>
               </div>
             </div>
@@ -52,7 +54,10 @@
         </div>
       </div>
       <div class="col-md-4 col-sm-12 col-12">
-        <base-button type="primary" @click="modals.modal = true"
+        <base-button
+          v-show="showButtonSave"
+          type="primary"
+          @click="modals.modal = true"
           >Nova Subsubárea</base-button
         >
         <modal
@@ -118,21 +123,27 @@ export default {
         modal: false,
       },
       subsubareas: [],
-      subAreaAtual: [{nome:"",descricao:""}],
+      subAreaAtual: [{ nome: "", descricao: "" }],
       form: {
         nome: "",
         descricao: "",
       },
     };
   },
+  computed: {
+    showButtonSave() {
+      let res = localStorage.getItem("user-token");
+      return !!res;
+    },
+  },
   methods: {
-        goToFormularios(card) {
+    goToFormularios(card) {
       this.$router.push({
         name: "formularios",
         params: {
           area: this.$route.params.id,
           id: card.id,
-        }
+        },
       });
     },
     getSubAreaAtual() {
@@ -182,7 +193,7 @@ export default {
       const baseUrl = "http://localhost:3333";
       request
         .post(`${baseUrl}/subareas/id/subsubareas`, this.form, {
-          headers: { subarea_id: this.$route.params.id },
+          headers: { subarea_id: this.$route.params.id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token")},
         })
         .then((res) => {
           this.modals.modal = false;

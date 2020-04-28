@@ -47,11 +47,9 @@ export default {
     }
   },
   mounted(){
-    console.log("montado")
     this.logado = localStorage.getItem('user-token');
   },
   updated(){
-    console.log("upsdate")
     this.logado = localStorage.getItem('user-token');
   },
   methods: {

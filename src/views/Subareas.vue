@@ -18,9 +18,9 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">{{this.areaAtual.nome}}</h1>
+                <h1 class="display-3  text-white">{{ this.areaAtual.nome }}</h1>
                 <p class="lead  text-white">
-                  {{this.areaAtual.descricao}}
+                  {{ this.areaAtual.descricao }}
                 </p>
               </div>
             </div>
@@ -55,56 +55,58 @@
         </div>
       </div>
       <div class="col-md-4 col-sm-12 col-12">
-          <base-button type="primary" @click="modals.modal = true"
-            >Nova Subárea</base-button
+        <base-button
+          v-show="showButtonSave"
+          type="primary"
+          @click="modals.modal = true"
+          >Nova Subárea</base-button
+        >
+        <modal
+          :show.sync="modals.modal"
+          body-classes="p-0"
+          modal-classes="modal-dialog-centered modal-sm"
+        >
+          <card
+            type="secondary"
+            shadow
+            header-classes="bg-white pb-5"
+            body-classes="px-lg-5 py-lg-5"
+            class="border-0"
           >
-          <modal
-            :show.sync="modals.modal"
-            body-classes="p-0"
-            modal-classes="modal-dialog-centered modal-sm"
-          >
-            <card
-              type="secondary"
-              shadow
-              header-classes="bg-white pb-5"
-              body-classes="px-lg-5 py-lg-5"
-              class="border-0"
-            >
-              <template>
-                <div class="text-muted text-center mb-3">
-                  <small>Nova Subárea</small>
+            <template>
+              <div class="text-muted text-center mb-3">
+                <small>Nova Subárea</small>
+              </div>
+            </template>
+            <template>
+              <form role="form">
+                <base-input alternative placeholder="Nome" v-model="form.nome">
+                </base-input>
+                <base-input
+                  alternative
+                  placeholder="Descrição"
+                  v-model="form.descricao"
+                >
+                </base-input>
+                <div class="text-center">
+                  <base-button
+                    type="danger"
+                    class="my-4"
+                    @click="modals.modal = false"
+                    >Fechar</base-button
+                  >
+                  <base-button
+                    type="primary"
+                    class="my-4"
+                    @click="createSubarea()"
+                    >Salvar</base-button
+                  >
                 </div>
-              </template>
-              <template>
-                <form role="form">
-                  <base-input
-                    alternative
-                    placeholder="Nome"
-                    v-model="form.nome"
-                  >
-                  </base-input>
-                  <base-input
-                    alternative
-                    placeholder="Descrição"
-                    v-model="form.descricao"
-                  >
-                  </base-input>
-                  <div class="text-center">
-                    <base-button
-                      type="danger"
-                      class="my-4"
-                      @click="modals.modal = false"
-                      >Fechar</base-button
-                    >
-                    <base-button type="primary" class="my-4" @click="createSubarea()"
-                      >Salvar</base-button
-                    >
-                  </div>
-                </form>
-              </template>
-            </card>
-          </modal>
-        </div>
+              </form>
+            </template>
+          </card>
+        </modal>
+      </div>
     </section>
   </div>
 </template>
@@ -130,6 +132,12 @@ export default {
       },
     };
   },
+  computed: {
+    showButtonSave() {
+      let res = localStorage.getItem("user-token");
+      return !!res;
+    },
+  },
   methods: {
     goToSubsubareas(card) {
       this.$router.push({
@@ -137,20 +145,21 @@ export default {
         params: {
           area: this.$route.params.id,
           id: card.id,
-        }
+        },
       });
     },
-    getAreaAtual(){
+    getAreaAtual() {
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
       request
         .get(`${baseUrl}/areas/id`, {
-          headers: { area_id:  this.$route.params.id},
+          headers: { area_id: this.$route.params.id },
         })
-        .then( res => {
+        .then((res) => {
           this.areaAtual = res.data;
-          console.log("Area",this.areaAtual);
-        }).catch(err => {
+          console.log("Area", this.areaAtual);
+        })
+        .catch((err) => {
           console.log("error");
         });
     },
@@ -161,10 +170,11 @@ export default {
         .get(`${baseUrl}/areas/id/subareas`, {
           headers: { area_id: this.$route.params.id },
         })
-        .then( res => {
+        .then((res) => {
           this.subareas = res.data;
-          console.log(this.subareas)
-        }).catch(err => {
+          console.log(this.subareas);
+        })
+        .catch((err) => {
           console.log("error");
         });
     },
@@ -173,13 +183,14 @@ export default {
       const request = axios.create();
       const baseUrl = "http://localhost:3333";
       request
-        .post(`${baseUrl}/areas/id/subareas`, this.form,{
-          headers: { area_id: this.$route.params.id },
+        .post(`${baseUrl}/areas/id/subareas`, this.form, {
+          headers: { area_id: this.$route.params.id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token") },
         })
-        .then( res => {
+        .then((res) => {
           this.modals.modal = false;
           this.getSubareas();
-        }).catch(err => {
+        })
+        .catch((err) => {
           console.log("error");
         });
 
@@ -187,7 +198,6 @@ export default {
     },
   },
   created() {
-    
     this.getSubareas();
     this.getAreaAtual();
   },
