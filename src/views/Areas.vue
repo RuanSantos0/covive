@@ -145,7 +145,7 @@ export default {
     },
     createArea() {
       const request = axios.create();
-      const baseUrl = "http://localhost:3333";
+      const baseUrl = "https://covive-api.herokuapp.com";
       request
         .post(`${baseUrl}/areas`, this.form, {
           headers: {
@@ -164,6 +164,7 @@ export default {
     },
   },
   created() {
+    console.log("BaseURL-Service",Service.baseUrl)
     this.getAreas();
   },
 };

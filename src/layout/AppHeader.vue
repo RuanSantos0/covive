@@ -16,20 +16,19 @@
         </div>
       </div>
       <div>
-        <base-button type="white" v-show="showbtn && !verificaToken">
           <router-link to="/login">
-            Login
-          </router-link>
+        <base-button type="white" v-show="showbtn && !verificaToken">
+            <h8 id="btn">Login</h8>
         </base-button>
+          </router-link>
         <base-button @click="clearAll" type="white" v-show="showbtn && verificaToken">
-           Logout
+           <h8 id="btn">Logout</h8>
         </base-button>
       </div>
-      
-      
     </base-nav>
   </header>
 </template>
+
 <script>
 import BaseNav from "@/components/BaseNav";
 import BaseDropdown from "@/components/BaseDropdown";
@@ -89,7 +88,10 @@ export default {
 
 }
 
-#btnLogout{
+#btn:hover{
   color:blue;
+}
+#btn{
+  color: blue;
 }
 </style>

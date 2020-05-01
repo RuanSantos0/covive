@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="col-md-4 col-sm-12 col-12">
-        <router-link slot="brand" class="btn mt-4 btn-primary" to="/customform">
+        <router-link v-show="showButtonSave" slot="brand" class="btn mt-4 btn-primary" to="/customform">
           Novo Formulário
         </router-link>
       </div>
@@ -71,6 +71,12 @@ export default {
         descricao: "",
       },
     };
+  },
+  computed:{
+      showButtonSave() {
+      let res = localStorage.getItem("user-token");
+      return !!res;
+    },
   },
   methods: {
     goToCustomform() {

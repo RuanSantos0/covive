@@ -41,6 +41,7 @@
                                     <base-button @click.prevent="login" type="primary" class="my-4">Entrar</base-button>
                                 </div>
                             </form>
+                            
                         </template>
                     </card>
                 </div>
@@ -65,7 +66,7 @@ export default {
         login(){
             this.showMessage = false;
                 
-            const request = axios.create({baseURL: 'http://localhost:3333'})
+            const request = axios.create({baseURL: 'https://covive-api.herokuapp.com'})
             request.post('/sessions', this.model).then(res => {
                 localStorage.setItem("user-token", res.data.token)
                 localStorage.setItem("user-data", JSON.stringify(res.data.user))

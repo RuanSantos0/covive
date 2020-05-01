@@ -3,7 +3,7 @@ import toastr from "toastr";
 import md5 from "md5";
 import conf from "../config";
 
-const baseUrl = "http://localhost:3333";
+const baseUrl = "https://covive-api.herokuapp.com";
 
 axios.interceptors.request.use(async config => {
   const authUrl = "/oauth/token";

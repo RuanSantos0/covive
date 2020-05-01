@@ -148,7 +148,7 @@ export default {
     },
     getSubAreaAtual() {
       const request = axios.create();
-      const baseUrl = "http://localhost:3333";
+      const baseUrl = "https://covive-api.herokuapp.com";
       request
         .get(`${baseUrl}/areas/id/subareas/id`, {
           headers: {
@@ -166,7 +166,7 @@ export default {
     },
     getSubsubareas() {
       const request = axios.create();
-      const baseUrl = "http://localhost:3333";
+      const baseUrl = "https://covive-api.herokuapp.com";
       request
         .get(`${baseUrl}/subareas/id/subsubareas`, {
           headers: { subarea_id: this.$route.params.id },
@@ -190,7 +190,7 @@ export default {
 
     createSubsubArea() {
       const request = axios.create();
-      const baseUrl = "http://localhost:3333";
+      const baseUrl = "https://covive-api.herokuapp.com";
       request
         .post(`${baseUrl}/subareas/id/subsubareas`, this.form, {
           headers: { subarea_id: this.$route.params.id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token")},
