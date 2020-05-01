@@ -18,11 +18,11 @@
       <div>
           <router-link to="/login">
         <base-button type="white" v-show="showbtn && !verificaToken">
-            <h8 id="btn">Login</h8>
+            <span id="btn">Login</span>
         </base-button>
           </router-link>
         <base-button @click="clearAll" type="white" v-show="showbtn && verificaToken">
-           <h8 id="btn">Logout</h8>
+           <span id="btn">Logout</span>
         </base-button>
       </div>
     </base-nav>
@@ -93,5 +93,6 @@ export default {
 }
 #btn{
   color: blue;
+  font-size: 12px;
 }
 </style>
