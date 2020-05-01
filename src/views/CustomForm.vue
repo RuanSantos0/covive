@@ -33,44 +33,28 @@
         </div>
       </section>
       <!-- 1st Hero Variation -->
-      <section class="section container section-lg pt-lg-0 mt--200">
-        <div v-for="(question, index) in questions" :key="index" class="row">
-          <div class="col">
-            <base-input
-              v-if="question.tipo == 'texto'"
-              :label="question.descricao"
-            />
-            <div v-else-if="question.tipo == 'opcoes'" >
-              <label :for="`opcao-${index}`">{{ question.descricao }}</label>
-              <div class="custom-control custom-radio mb-3">
-                <input
-                  :checked="question.valor == 'sim'"
-                  name="custom-radio-1"
-                  class="custom-control-input"
-                  id="customRadio1"
-                  type="radio"
-                  @click="question.valor = 'sim'"
-                >
-                <label class="custom-control-label" for="customRadio1">Sim</label>
-              </div>
-              <div class="custom-control custom-radio mb-3">
-                <input
-                  :checked="question.valor == 'nao'"
-                  name="custom-radio-1"
-                  class="custom-control-input"
-                  id="customRadio2"
-                  type="radio"
-                  @click="question.valor = 'nao'"
-                >
-                <label class="custom-control-label" for="customRadio2">Não</label>
-              </div>
-            </div>
+      <section class="section container section-lg pt-lg-0 mt--200 px-0 ">
+        
+        <!-- <div v-for="(question, index) in questions" :key="index" class="page-cards col-md-4 col-sm-12 col-12">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <img :src="require(`../assets/img/${item.src}`)" />
+          </a>
+          <h3>{{question.descricao}}</h3>
+          <p class="text-center">{{item.description}}</p>
+        </div> -->
+
+        <div class="row row-grid">
+          <div class="col-12">
+            <base-button type="secondary" @click="modal.isOpen = true">
+              Nova Pergunta
+            </base-button>
           </div>
         </div>
-        <div class="row row-grid">
-          <base-button type="secondary" @click="modal.isOpen = true">
-            Nova Pergunta
-          </base-button>
+
+        <div v-for="(question, index) in questions" :key="index" class="row row-grid mb-2">
+          <div class="col-12">
+            <base-question v-model="questions[index]"></base-question>
+          </div>
         </div>
       </section>
     </div>
@@ -99,25 +83,6 @@
                 <option value="texto">Texto</option>
                 <option value="opcoes">Multipla escolha</option>
               </select>
-              <!-- <base-input
-                v-for="(item, key) in modal.options"
-                :key="key"
-                :value="item"
-                @iconclick="modal.options.splice(key, 1)"
-                addon-right-icon="ni ni-fat-remove"
-                readonly
-                inputClasses="bg-white"
-              ></base-input>
-              <base-input
-                @keypress.enter="addNewOption"
-                @click="addNewOption"
-                @iconclick="addNewOption"
-                v-if="currentQuestion.tipo == 'opcoes'"
-                alternative
-                placeholder="Nova Opção"
-                addon-right-icon="ni ni-fat-add"
-                v-model="modal.newOption"
-              ></base-input> -->
             </form>
             <base-button type="danger" class="my-4" @click="cancel" >Cancelar</base-button>
             <base-button type="primary" class="my-4" @click="newQuestion">Salvar</base-button>
@@ -130,11 +95,12 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
-
+import BaseQuestion from "./components/BaseQuestion.vue"
 
 export default {
   components: {
     Modal,
+    BaseQuestion
   },
   data () {
     return {
