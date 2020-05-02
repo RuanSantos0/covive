@@ -21,7 +21,7 @@
                 <h1 class="display-3  text-white">Formulário Customizado</h1>
                 <p class="lead  text-white">
                   <input
-                    placeholder="Nome do Formulário aqui"
+                    placeholder="Nome do Formulário"
                     class="input-transparent"
                     v-model="formulario.nome"
                   />
@@ -43,17 +43,17 @@
           <p class="text-center">{{item.description}}</p>
         </div> -->
 
-        <div class="row row-grid">
-          <div class="col-12">
-            <base-button type="secondary" @click="modal.isOpen = true">
-              Nova Pergunta
-            </base-button>
-          </div>
-        </div>
 
         <div v-for="(question, index) in questions" :key="index" class="row row-grid mb-2">
           <div class="col-12">
             <base-question v-model="questions[index]"></base-question>
+          </div>
+        </div>
+                <div class="row row-grid">
+          <div class="col-12">
+            <base-button type="primary" @click="modal.isOpen = true">
+              Nova Pergunta
+            </base-button>
           </div>
         </div>
       </section>
@@ -133,6 +133,7 @@ export default {
     newQuestion () {
       this.questions.push({...this.currentQuestion})
       this.cancel()
+      console.log(this.questions);
     },
     cancel () {
       this.modal = { isOpen: false, options: [], option: '', newOption: '' },
@@ -167,5 +168,21 @@ export default {
   .form-control {
     background-color: white !important;
   }
+}
+
+::-webkit-input-placeholder {
+   color: white;
+}
+ 
+:-moz-placeholder { /* Firefox 18- */
+   color: white;  
+}
+ 
+::-moz-placeholder {  /* Firefox 19+ */
+   color: white;  
+}
+ 
+:-ms-input-placeholder {  
+   color: white;  
 }
 </style>

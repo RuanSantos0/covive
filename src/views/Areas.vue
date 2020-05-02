@@ -43,6 +43,9 @@
               >
                 Entrar
               </router-link>
+              <base-button v-show="showButtonSave" type="danger" class="btn mt-4 btn-primary">
+                Excluir
+              </base-button>
             </div>
           </div>
         </div>
@@ -164,7 +167,6 @@ export default {
     },
   },
   created() {
-    console.log("BaseURL-Service",Service.baseUrl)
     this.getAreas();
   },
 };
