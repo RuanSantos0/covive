@@ -12,6 +12,7 @@ import SubSubareas from "./views/SubSubareas.vue"
 import Colaboradores from "./views/Colaboradores.vue";
 import Formularios from "./views/Formularios.vue"
 import CustomForm from "./views/CustomForm.vue"
+import ExibeForm from "./views/ExibeForm.vue"
 
 Vue.use(Router);
 
@@ -73,7 +74,7 @@ export default new Router({
       },
     },
     {
-      path: "/subsubareas/:id",
+      path: "/subsubareas/:id/:area",
       name: "subsubareas",
       components: {
         header: AppHeader,
@@ -82,7 +83,7 @@ export default new Router({
       },
     },
     {
-      path: "/formularios/:id",
+      path: "/formularios/:id/:area",
       name: "formularios",
       components: {
         header: AppHeader,
@@ -101,10 +102,19 @@ export default new Router({
     },
     {
       path: '/customform',
-      name: 'Custom Form',
+      name: 'customform',
       components: {
         header: AppHeader,
         default: CustomForm,
+        footer: AppFooter
+      }
+    },
+    {
+      path: '/exibeformulario',
+      name: 'exibeformulario',
+      components: {
+        header: AppHeader,
+        default: ExibeForm,
         footer: AppFooter
       }
     }

@@ -20,7 +20,8 @@
               <div class="col-lg-6">
                 <h1 class="display-3  text-white">Áreas</h1>
                 <p class="lead  text-white">
-                  --
+                  CATÁLOGO DE SERVIÇOS DA REDE SOCIOASSISTENCIAL E DE SAÚDE
+DO CEARÁ EM TEMPOS DE COVID-19
                 </p>
               </div>
             </div>
@@ -43,7 +44,7 @@
               >
                 Entrar
               </router-link>
-              <base-button v-show="showButtonSave" type="danger" class="btn mt-4 btn-primary">
+              <base-button v-show="showButtonSave" @click="deleteArea(card.id)" type="danger" class="btn mt-4 btn-primary">
                 Excluir
               </base-button>
             </div>
@@ -165,6 +166,24 @@ export default {
 
       console.log(this.form);
     },
+    deleteArea(id){
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .delete(`${baseUrl}/areas/id`, {
+          headers: {
+            area_id: id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
+        })
+        .then((res) => {
+          this.getAreas();
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+
+      console.log(this.form);
+    }
   },
   created() {
     this.getAreas();

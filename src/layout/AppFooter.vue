@@ -1,33 +1,34 @@
 <template>
-    <footer class="footer has-cards">
-        <div class="container">
-            <hr>
-            <div class="row align-items-center justify-content-md-between">
-                <div class="col-md-6">
-                    <div class="copyright">
-                       
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <ul class="nav nav-footer justify-content-end">
-                        <li class="nav-item">
-                            <a href="https://www.creative-tim.com" class="nav-link" target="_blank" rel="noopener">Creative Tim</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <footer class="footer has-cards">
+    <div class="container">
+      <hr />
+      <div class="row align-items-center justify-content-md-between">
+        <div class="col-md-6">
+          <div class="copyright"></div>
         </div>
-    </footer>
+        <div class="col-md-6">
+          <ul class="nav nav-footer justify-content-end">
+            <li class="nav-item">
+              <router-link to="/colaboradores">
+                <base-button icon="fa fa-users" type="primary">
+                  <span>Colaboradores</span>
+                </base-button>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 </template>
 <script>
 export default {
-  name: 'app-footer',
+  name: "app-footer",
   data() {
     return {
-      year: new Date().getFullYear()
-    }
-  }
+      year: new Date().getFullYear(),
+    };
+  },
 };
 </script>
-<style>
-</style>
+<style></style>
