@@ -19,10 +19,10 @@
             <div class="row">
               <div class="col-lg-6">
                 <h1 class="display-3  text-white">
-                  {{ this.subAreaAtual.nome }}
+                  {{ subAreaAtual.nome }}
                 </h1>
                 <p class="lead  text-white">
-                  {{ this.subAreaAtual.descricao }}
+                  {{ subAreaAtual.descricao }}
                 </p>
               </div>
             </div>
@@ -32,7 +32,7 @@
       <!-- 1st Hero Variation -->
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
-      <div class="row row-grid">
+      <div v-show="subsubareas.length > 0" class="row row-grid">
         <div
           class="col-lg-4 pb-4"
           v-for="(card, index) in subsubareas"
@@ -49,10 +49,24 @@
               >
                 Entrar
               </button>
+              <base-button
+                v-show="showButtonSave"
+                @click="deleteSubsubarea(card.id)"
+                type="danger"
+                class="btn mt-4 btn-primary"
+              >
+                Excluir
+              </base-button>
             </div>
           </div>
         </div>
       </div>
+      <!-- <div v-show="!(subsubareas.length > 0)" class="d-flex justify-content-center align-items-center flex-column text-center">
+          <img class="img-search" src="../assets/img/search.svg" alt="">
+          <h1>Nenhum resultado encontrado</h1>
+          <h3>
+Parece que não conseguimos encontrar nenhum resultado com base na sua pesquisa.</h3>
+      </div> -->
       <div class="col-md-4 col-sm-12 col-12">
         <base-button
           v-show="showButtonSave"
@@ -130,11 +144,16 @@ export default {
       },
     };
   },
+  
   computed: {
     showButtonSave() {
       let res = localStorage.getItem("user-token");
       return !!res;
     },
+  },
+  updated(){
+    console.log("nome:",this.subAreaAtual.nome)
+    console.log("nome:",this.subAreaAtual.descricao)
   },
   methods: {
     goToFormularios(card) {
@@ -178,14 +197,6 @@ export default {
         .catch((err) => {
           console.log("error");
         });
-
-      // const resp = await request.getByParams({}, "areas/id/subareas", {
-      //   headers: { area_id: this.$route.params.id },
-      // });
-      // if (resp) {
-      //   this.subareas = resp;
-      //   console.log(resp);
-      // }
     },
 
     createSubsubArea() {
@@ -193,7 +204,10 @@ export default {
       const baseUrl = "https://covive-api.herokuapp.com";
       request
         .post(`${baseUrl}/subareas/id/subsubareas`, this.form, {
-          headers: { subarea_id: this.$route.params.id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token")},
+          headers: {
+            subarea_id: this.$route.params.id,
+            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
         })
         .then((res) => {
           this.modals.modal = false;
@@ -204,11 +218,29 @@ export default {
         });
 
       console.log(this.form);
-      // const response = await request.create(this.form, "subareas");
-      // this.modals.modal = false;
+    },
+    deleteSubsubarea(id) {
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .delete(`${baseUrl}/subareas/id/subsubareas/id`, {
+          headers: {
+            subarea_id: this.$route.params.id,
+            subsubarea_id: id,
+           'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
+        })
+        .then((res) => {
+          this.getSubsubareas();
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+
+      console.log(this.form);
     },
   },
-  created() {
+  mounted() {
     this.getSubAreaAtual();
     this.getSubsubareas();
     console.log("Params", this.$route.params);
@@ -219,4 +251,10 @@ export default {
 .card-body {
   min-height: 330px;
 }
+
+.img-search{
+  height: 200px;
+  width: 200px;
+}
+
 </style>

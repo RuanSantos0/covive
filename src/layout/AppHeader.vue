@@ -16,14 +16,20 @@
         </div>
       </div>
       <div>
-          <router-link to="/login">
-        <base-button type="white" v-show="showbtn && !verificaToken">
+        <router-link to="/login">
+          <base-button type="white" v-show="showbtn && !verificaToken">
             <span id="btn">Login</span>
-        </base-button>
-          </router-link>
-        <base-button @click="clearAll" type="white" v-show="showbtn && verificaToken">
-           <span id="btn">Logout</span>
-        </base-button>
+          </base-button>
+        </router-link>
+        <router-link to="/">
+          <base-button
+            @click="clearAll"
+            type="white"
+            v-show="showbtn && verificaToken"
+          >
+            <span id="btn">Logout</span>
+          </base-button>
+        </router-link>
       </div>
     </base-nav>
   </header>
@@ -40,26 +46,25 @@ export default {
     CloseButton,
     BaseDropdown,
   },
-  data(){
-    return{
-      logado: null
-    }
+  data() {
+    return {
+      logado: null,
+    };
   },
-  mounted(){
-    this.logado = localStorage.getItem('user-token');
+  mounted() {
+    this.logado = localStorage.getItem("user-token");
   },
-  updated(){
-    this.logado = localStorage.getItem('user-token');
+  updated() {
+    this.logado = localStorage.getItem("user-token");
   },
   methods: {
-    clearAll(){
+    clearAll() {
       localStorage.clear();
-      this.logado = localStorage.getItem('user-token');
-    }
- 
+      this.logado = localStorage.getItem("user-token");
+    },
   },
   computed: {
-    verificaToken(){
+    verificaToken() {
       return this.logado || false;
     },
     showbtn() {
@@ -85,13 +90,12 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-
 }
 
-#btn:hover{
-  color:blue;
+#btn:hover {
+  color: blue;
 }
-#btn{
+#btn {
   color: blue;
   font-size: 12px;
 }

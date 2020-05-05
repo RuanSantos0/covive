@@ -18,9 +18,9 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">Formulários</h1>
+                <h1 class="display-3  text-white">Formulário {{subsubAreaAtual.nome}}</h1>
                 <p class="lead  text-white">
-                  --
+                 
                 </p>
               </div>
             </div>
@@ -31,14 +31,26 @@
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
       <div class="row row-grid">
-        <div class="col-lg-4 pb-4" v-for="(item, index) in forms" :key="index">
+        <div class="col-lg-4 pb-4" v-for="(card, index) in formulario" :key="index">
           <div class="card border-0 card-lift--hover shadow">
             <div class="card-body py-5">
-              <h6 class="text-primary text-uppercase">{{ item.nome }}</h6>
-              <p class="description mt-3">{{ item.descricao }}</p>
-              <router-link slot="brand" class="btn mt-4 btn-primary" to="/">
+              <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
+              <p class="description mt-3">{{ card.createdAt }}</p>
+                            <button
+                slot="brand"
+                class="btn mt-4 btn-primary"
+                @click="goToExibeform(card)"
+              >
                 Entrar
-              </router-link>
+              </button>
+              <base-button
+                v-show="showButtonSave"
+                @click="deleteForm(card.id)"
+                type="danger"
+                class="btn mt-4 btn-primary"
+              >
+                Excluir
+              </base-button>
             </div>
           </div>
         </div>
@@ -55,6 +67,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import Service from "@/services/ApiServices.js";
+import axios from "axios";
 export default {
   name: "Forms",
   components: {
@@ -65,6 +78,8 @@ export default {
       modals: {
         modal: false,
       },
+      formulario: [],
+      subsubAreaAtual: [{ nome: "", descricao: "" }],
       forms: [],
       form: {
         nome: "",
@@ -78,7 +93,20 @@ export default {
       return !!res;
     },
   },
+    updated(){
+    console.log("nome:",this.subsubAreaAtual.nome)
+    console.log("nome:",this.subsubAreaAtual.descricao)
+  },
   methods: {
+    goToExibeform(card) {
+      this.$router.push({
+        name: "exibeformulario",
+        // params: {
+        //   area: this.$route.params.id,
+        //   id: card.id,
+        // },
+      });
+    },
     goToCustomform() {
       this.$router.push({
         name: "customform",
@@ -88,30 +116,71 @@ export default {
         },
       });
     },
-    setHref(cards = []) {
-      for (let item of cards) {
-        if (item.nome === "COLABORADORE(A)S") item.href = "/colaboradores";
-        else item.href = `/subarea/${item.id}`;
-      }
+    getSubsubAreaAtual() {
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .get(`${baseUrl}/subareas/id/subsubareas/id`, {
+          headers: {
+            subarea_id: this.$route.params.area,
+            subsubarea_id: this.$route.params.id,
+          },
+        })
+        .then((res) => {
+          this.subsubAreaAtual = res.data;
+          console.log("Subsubarea", this.subsubAreaAtual);
+        })
+        .catch((err) => {
+          console.log(err, "error");
+        });
     },
-    async getAreas() {
-      const request = new Service();
-      const resp = await request.getByParams({}, "areas");
-      if (resp) {
-        this.areas = resp;
-        this.setHref(this.areas);
-      }
+    getFormularios() {
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .get(`${baseUrl}/subsubareas/id/formularios`, {
+          headers: { subsubarea_id: this.$route.params.id },
+        })
+        .then((res) => {
+          this.formulario = res.data;
+          console.log(this.formulario);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
     },
     async createArea() {
       const request = new Service();
       console.log(this.form);
       const response = await request.create(this.form, "areas");
       this.modals.modal = false;
-      this.getAreas();
+      this.getFormularios();
+    },
+    deleteForm(id) {
+      // const request = axios.create();
+      // const baseUrl = "https://covive-api.herokuapp.com";
+      // request
+      //   .delete(`${baseUrl}/subareas/id/subsubareas/id`, {
+      //     headers: {
+      //       subarea_id: this.$route.params.id,
+      //       subsubarea_id: id,
+      //      'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+      //     },
+      //   })
+      //   .then((res) => {
+      //     this.getSubsubareas();
+      //   })
+      //   .catch((err) => {
+      //     console.log("error", err);
+      //   });
+
+      // console.log(this.form);
+      console.log("deletado")
     },
   },
   created() {
-    this.getAreas();
+    this.getFormularios();
+    this.getSubsubAreaAtual();
     console.log("Params", this.$route.params);
   },
 };

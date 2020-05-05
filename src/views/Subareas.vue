@@ -47,6 +47,14 @@
               >
                 Entrar
               </button>
+              <base-button
+                v-show="showButtonSave"
+                @click="deleteSubarea(card.id)"
+                type="danger"
+                class="btn mt-4 btn-primary"
+              >
+                Excluir
+              </base-button>
               <!-- <a type="" :class="`btn mt-4 btn-primary`" href="/subsubareas">
                 Entrar
               </a> -->
@@ -180,12 +188,14 @@ export default {
     },
 
     createSubarea() {
-
       const request = axios.create();
       const baseUrl = "https://covive-api.herokuapp.com";
       request
         .post(`${baseUrl}/areas/id/subareas`, this.form, {
-          headers: { area_id: this.$route.params.id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token") },
+          headers: {
+            area_id: this.$route.params.id,
+            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
         })
         .then((res) => {
           this.modals.modal = false;
@@ -193,6 +203,26 @@ export default {
         })
         .catch((err) => {
           console.log("error");
+        });
+
+      console.log(this.form);
+    },
+    deleteSubarea(id) {
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .delete(`${baseUrl}/areas/id/subareas/id`, {
+          headers: {
+            area_id: this.$route.params.id,
+            subarea_id: id,
+            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
+        })
+        .then((res) => {
+          this.getSubareas();
+        })
+        .catch((err) => {
+          console.log("error", err);
         });
 
       console.log(this.form);
