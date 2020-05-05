@@ -11,7 +11,7 @@
           <h3 for="">{{ model.descricao }}</h3>
           <input type="text" class="form-control" v-model="model.valor" />
         </div>
-        <div v-else-if="model.tipo == 'opcoes'" >
+        <div v-else-if="model.tipo == 'opcao'" >
           <h3>{{ model.descricao }}</h3>
           <div class="input-group">
             <div class="custom-control custom-radio mr-3">

@@ -81,7 +81,7 @@
               <select v-else v-model="currentQuestion.tipo" placeholder="Asdasd" class="form-control custom-select without-border custom-margin">
                 <option disabled selected>Tipo da Pergunta</option>
                 <option value="texto">Texto</option>
-                <option value="opcoes">Multipla escolha</option>
+                <option value="opcao">Multipla escolha</option>
               </select>
             </form>
             <base-button type="danger" class="my-4" @click="cancel" >Cancelar</base-button>
@@ -96,6 +96,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import BaseQuestion from "./components/BaseQuestion.vue"
+import axios from "axios"
 
 export default {
   components: {
@@ -122,6 +123,16 @@ export default {
       },
       questions: []
     }
+  },
+  mounted () {
+    const form_id = "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1"
+
+    axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { "formulario_id": "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1" } }).then(
+      res => {
+        this.questions = res.data
+        console.log(res.data)
+      }
+    )
   },
   methods: {
     addNewOption () {
