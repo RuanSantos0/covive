@@ -56,9 +56,14 @@
         </div>
       </div>
       <div class="col-md-4 col-sm-12 col-12">
-        <router-link v-show="showButtonSave" slot="brand" class="btn mt-4 btn-primary" to="/customform">
-          Novo Formulário
-        </router-link>
+        <base-button
+                v-show="showButtonSave"
+                @click="goToCustomform()"
+                type="primary"
+                class="btn mt-4 btn-primary"
+              >
+                Novo Formulário
+              </base-button>
       </div>
     </section>
   </div>
@@ -101,10 +106,10 @@ export default {
     goToExibeform(card) {
       this.$router.push({
         name: "exibeformulario",
-        // params: {
-        //   area: this.$route.params.id,
-        //   id: card.id,
-        // },
+        params: {
+          area: this.$route.params.id,
+          id: card.id,
+        },
       });
     },
     goToCustomform() {
@@ -112,7 +117,7 @@ export default {
         name: "customform",
         params: {
           area: this.$route.params.id,
-          id: card.id,
+          //id: card.id,
         },
       });
     },

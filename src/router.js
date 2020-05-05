@@ -101,7 +101,7 @@ export default new Router({
       },
     },
     {
-      path: '/customform',
+      path: '/customform/:id/:area',
       name: 'customform',
       components: {
         header: AppHeader,
@@ -110,7 +110,7 @@ export default new Router({
       }
     },
     {
-      path: '/exibeformulario',
+      path: '/exibeformulario/:id/:area',
       name: 'exibeformulario',
       components: {
         header: AppHeader,

@@ -18,15 +18,7 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">Formulário Customizado</h1>
-                <p class="lead  text-white">
-                  <input
-                    placeholder="Nome do Formulário"
-                    class="input-transparent"
-                    v-model="formulario.nome"
-                  />
-                  <!-- *algo aqui* -->
-                </p>
+                <h1 class="display-3  text-white">{{formularioAtual.nome}}</h1>
               </div>
             </div>
           </div>
@@ -46,15 +38,15 @@
 
         <div v-for="(question, index) in questions" :key="index" class="row row-grid mb-2">
           <div class="col-12">
-            <base-question v-model="questions[index]"></base-question>
+            <base-question readonly v-model="questions[index]"></base-question>
           </div>
         </div>
                 <div class="row row-grid">
-          <div class="col-12">
+          <!-- <div class="col-12">
             <base-button type="primary" @click="modal.isOpen = true">
               Nova Pergunta
             </base-button>
-          </div>
+          </div> -->
         </div>
       </section>
     </div>
@@ -96,7 +88,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import BaseQuestion from "./components/BaseQuestion.vue"
-
+import axios from "axios"
 export default {
   components: {
     Modal,
@@ -120,10 +112,39 @@ export default {
         valor: '',
         formulario_id: 1
       },
-      questions: []
+      questions: [],
+      formularioAtual: [{ nome: ""}],
     }
   },
+  mounted () {
+    this.getFormulario()
+    console.log("Params", this.$route.params);
+    axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { formulario_id: this.$route.params.id } }).then(
+      res => {
+        this.questions = res.data
+        console.log(res.data)
+      }
+    )
+  },
   methods: {
+    getFormulario() {
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .get(`${baseUrl}/subsubareas/id/formularios/id`, {
+          headers: {
+            subsubarea_id: this.$route.params.area,
+            formulario_id: this.$route.params.id,
+          },
+        })
+        .then((res) => {
+          this.formularioAtual = res.data;
+          console.log("Formulario", this.formularioAtual);
+        })
+        .catch((err) => {
+          console.log(err, "error");
+        });
+    },
     addNewOption () {
       if ( this.modal.newOption ) {
         this.modal.options.push(this.modal.newOption)

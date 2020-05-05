@@ -125,15 +125,17 @@ export default {
     }
   },
   mounted () {
+    console.log("Params", this.$route.params);
     const form_id = "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1"
 
-    axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { "formulario_id": "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1" } }).then(
-      res => {
-        this.questions = res.data
-        console.log(res.data)
-      }
-    )
+    // axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { "formulario_id": "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1" } }).then(
+    //   res => {
+    //     this.questions = res.data
+    //     console.log(res.data)
+    //   }
+    // )
   },
+
   methods: {
     addNewOption () {
       if ( this.modal.newOption ) {
