@@ -43,7 +43,7 @@
         </div>
                 <div class="row row-grid">
           <div class="col-12">
-            <base-button type="primary" @click="modal.isOpen = true">
+            <base-button type="warning" @click="modal.isOpen = true">
               Novas informações
             </base-button>
           </div>
