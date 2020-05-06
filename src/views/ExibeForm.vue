@@ -42,11 +42,11 @@
           </div>
         </div>
                 <div class="row row-grid">
-          <!-- <div class="col-12">
+          <div class="col-12">
             <base-button type="primary" @click="modal.isOpen = true">
-              Nova Pergunta
+              Novas informações
             </base-button>
-          </div> -->
+          </div>
         </div>
       </section>
     </div>
