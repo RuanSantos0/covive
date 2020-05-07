@@ -34,25 +34,19 @@
       </section>
       <!-- 1st Hero Variation -->
       <section class="section container section-lg pt-lg-0 mt--200 px-0 ">
-        
-        <!-- <div v-for="(question, index) in questions" :key="index" class="page-cards col-md-4 col-sm-12 col-12">
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <img :src="require(`../assets/img/${item.src}`)" />
-          </a>
-          <h3>{{question.descricao}}</h3>
-          <p class="text-center">{{item.description}}</p>
-        </div> -->
-
-
         <div v-for="(question, index) in questions" :key="index" class="row row-grid mb-2">
           <div class="col-12">
             <base-question v-model="questions[index]"></base-question>
           </div>
         </div>
-                <div class="row row-grid">
+        <div class="row row-grid">
           <div class="col-12">
             <base-button type="primary" @click="modal.isOpen = true">
               Nova Pergunta
+            </base-button>
+
+            <base-button type="primary" @click="save">
+              Salvar
             </base-button>
           </div>
         </div>
@@ -125,18 +119,27 @@ export default {
     }
   },
   mounted () {
-    console.log("Params", this.$route.params);
-    const form_id = "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1"
+    const { subsubarea_id } = this.$route.params
 
-    // axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { "formulario_id": "e4f9002e-b15b-4245-9f4f-5a7ef4b7d2f1" } }).then(
-    //   res => {
-    //     this.questions = res.data
-    //     console.log(res.data)
-    //   }
-    // )
+    const userToken = localStorage.getItem('user-token')
+
+    this.api = axios.create({
+      baseURL: 'https://covive-api.herokuapp.com',
+      headers: {
+        authorization: `Bearer ${userToken}`,
+        subsubarea_id
+      }
+    })
   },
 
   methods: {
+    save () {
+      this.api.post('/subsubareas/id/formularios', this.formulario).then(
+        res => {
+          const formulario_id = res.data['id']
+        }
+      )
+    },
     addNewOption () {
       if ( this.modal.newOption ) {
         this.modal.options.push(this.modal.newOption)
