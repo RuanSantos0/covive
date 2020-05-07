@@ -107,7 +107,7 @@ export default {
       this.$router.push({
         name: "exibeformulario",
         params: {
-          area: this.$route.params.id,
+          subsubarea: this.$route.params.id,
           id: card.id,
         },
       });
@@ -116,7 +116,7 @@ export default {
       this.$router.push({
         name: "customform",
         params: {
-          area: this.$route.params.id,
+          subsubarea: this.$route.params.id,
           //id: card.id,
         },
       });
@@ -127,7 +127,7 @@ export default {
       request
         .get(`${baseUrl}/subareas/id/subsubareas/id`, {
           headers: {
-            subarea_id: this.$route.params.area,
+            subarea_id: this.$route.params.subarea,
             subsubarea_id: this.$route.params.id,
           },
         })

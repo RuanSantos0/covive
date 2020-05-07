@@ -160,7 +160,7 @@ export default {
       this.$router.push({
         name: "formularios",
         params: {
-          area: this.$route.params.id,
+          subarea: this.$route.params.id,
           id: card.id,
         },
       });

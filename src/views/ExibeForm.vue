@@ -117,7 +117,7 @@ export default {
     }
   },
   mounted () {
-    this.getFormulario()
+    this.getFormularioAtual()
     console.log("Params", this.$route.params);
     axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { formulario_id: this.$route.params.id } }).then(
       res => {
@@ -127,13 +127,13 @@ export default {
     )
   },
   methods: {
-    getFormulario() {
+    getFormularioAtual() {
       const request = axios.create();
       const baseUrl = "https://covive-api.herokuapp.com";
       request
         .get(`${baseUrl}/subsubareas/id/formularios/id`, {
           headers: {
-            subsubarea_id: this.$route.params.area,
+            subsubarea_id: this.$route.params.subsubarea,
             formulario_id: this.$route.params.id,
           },
         })

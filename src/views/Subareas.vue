@@ -232,6 +232,9 @@ export default {
     this.getSubareas();
     this.getAreaAtual();
   },
+  mounted(){
+    console.log(this.$route.params);
+  }
 };
 </script>
 <style lang="scss" scoped>
