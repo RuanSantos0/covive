@@ -116,7 +116,7 @@ export default {
       this.$router.push({
         name: "customform",
         params: {
-          subsubarea: this.$route.params.id,
+          subsubarea_id: this.$route.params.id,
           //id: card.id,
         },
       });
