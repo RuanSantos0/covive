@@ -83,7 +83,7 @@ export default new Router({
       },
     },
     {
-      path: "/formularios/:id/:area",
+      path: "/formularios/:id/:area/:subarea",
       name: "formularios",
       components: {
         header: AppHeader,

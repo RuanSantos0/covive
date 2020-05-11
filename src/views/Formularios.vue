@@ -20,7 +20,6 @@
               <div class="col-lg-6">
                 <h1 class="display-3  text-white">Formulário {{subsubAreaAtual.nome}}</h1>
                 <p class="lead  text-white">
-                 
                 </p>
               </div>
             </div>
@@ -100,7 +99,7 @@ export default {
   },
     updated(){
     console.log("nome:",this.subsubAreaAtual.nome)
-    console.log("nome:",this.subsubAreaAtual.descricao)
+    console.log("Descrição:",this.subsubAreaAtual.descricao)
   },
   methods: {
     goToExibeform(card) {
@@ -162,24 +161,24 @@ export default {
       this.getFormularios();
     },
     deleteForm(id) {
-      // const request = axios.create();
-      // const baseUrl = "https://covive-api.herokuapp.com";
-      // request
-      //   .delete(`${baseUrl}/subareas/id/subsubareas/id`, {
-      //     headers: {
-      //       subarea_id: this.$route.params.id,
-      //       subsubarea_id: id,
-      //      'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
-      //     },
-      //   })
-      //   .then((res) => {
-      //     this.getSubsubareas();
-      //   })
-      //   .catch((err) => {
-      //     console.log("error", err);
-      //   });
+      const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .delete(`${baseUrl}/subsubareas/id/formularios/id`, {
+          headers: {
+            subsubarea_id: this.$route.params.id,
+            formulario_id: id,
+           'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+          },
+        })
+        .then((res) => {
+          this.getFormularios()
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
 
-      // console.log(this.form);
+      console.log(this.form);
       console.log("deletado")
     },
   },
