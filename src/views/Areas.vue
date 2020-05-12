@@ -21,7 +21,7 @@
                 <h1 class="display-3  text-white">Áreas</h1>
                 <p class="lead  text-white">
                   CATÁLOGO DE SERVIÇOS DA REDE SOCIOASSISTENCIAL E DE SAÚDE DO
-                  CEARÁ EM TEMPOS DE COVID-19
+                  CEARÁ EM TEMPOS DE COVID-19.
                 </p>
               </div>
             </div>
