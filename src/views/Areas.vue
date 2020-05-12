@@ -20,8 +20,8 @@
               <div class="col-lg-6">
                 <h1 class="display-3  text-white">Áreas</h1>
                 <p class="lead  text-white">
-                  CATÁLOGO DE SERVIÇOS DA REDE SOCIOASSISTENCIAL E DE SAÚDE
-DO CEARÁ EM TEMPOS DE COVID-19
+                  CATÁLOGO DE SERVIÇOS DA REDE SOCIOASSISTENCIAL E DE SAÚDE DO
+                  CEARÁ EM TEMPOS DE COVID-19
                 </p>
               </div>
             </div>
@@ -31,22 +31,40 @@ DO CEARÁ EM TEMPOS DE COVID-19
       <!-- 1st Hero Variation -->
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
-      <div class="row row-grid">
+      <div class="row">
+        <div class="col-md-8">
+          <base-input
+            v-model="search.busca"
+            placeholder="Busca..."
+          ></base-input>
+        </div>
+        <div class="col-md-4">
+          <base-button @click="busca()" type="Secondary">Buscar</base-button>
+        </div>
+      </div>
+      <div class="row row-grid tp-space">
         <div class="col-lg-4 pb-4" v-for="(card, index) in areas" :key="index">
           <div class="card border-0 card-lift--hover shadow">
             <div class="card-body py-5">
               <h6 class="text-primary text-uppercase">{{ card.nome }}</h6>
               <p class="description mt-3">{{ card.descricao }}</p>
-              <router-link
-                slot="brand"
-                class="btn mt-4 btn-primary"
-                :to="card.href"
-              >
-                Entrar
-              </router-link>
-              <base-button v-show="showButtonSave" @click="deleteArea(card.id)" type="danger" class="btn mt-4 btn-primary">
-                Excluir
-              </base-button>
+              <div>
+                <router-link
+                  slot="brand"
+                  class="btn mt-4 btn-primary"
+                  :to="`subarea/${card.id}`"
+                >
+                  Entrar
+                </router-link>
+                <base-button
+                  v-show="showButtonSave"
+                  @click="deleteArea(card.id)"
+                  type="danger"
+                  class="btn mt-4 btn-primary"
+                >
+                  Excluir
+                </base-button>
+              </div>
             </div>
           </div>
         </div>
@@ -120,6 +138,9 @@ export default {
         modal: false,
       },
       areas: [],
+      search: {
+        busca: "",
+      },
       form: {
         nome: "",
         descricao: "",
@@ -133,10 +154,23 @@ export default {
     },
   },
   methods: {
-    setHref(cards = []) {
-      for (let item of cards) {
-        if (item.nome === "COLABORADORE(A)S") item.href = "/colaboradores";
-        else item.href = `/subarea/${item.id}`;
+    busca() {
+      if (this.search.busca === "") {
+        this.getAreas();
+      } else {
+        const request = axios.create();
+        const baseUrl = "https://covive-api.herokuapp.com";
+        request
+          .get(`${baseUrl}/areas/customSearch`, {
+            headers: { busca: this.search.busca },
+          })
+          .then((res) => {
+            this.areas = res.data;
+            console.log("areas:", res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     async getAreas() {
@@ -144,7 +178,6 @@ export default {
       const resp = await request.getByParams({}, "areas");
       if (resp) {
         this.areas = resp;
-        this.setHref(this.areas);
       }
     },
     createArea() {
@@ -153,7 +186,7 @@ export default {
       request
         .post(`${baseUrl}/areas`, this.form, {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+            Authorization: "Bearer " + localStorage.getItem("user-token"),
           },
         })
         .then((res) => {
@@ -166,13 +199,14 @@ export default {
 
       console.log(this.form);
     },
-    deleteArea(id){
+    deleteArea(id) {
       const request = axios.create();
       const baseUrl = "https://covive-api.herokuapp.com";
       request
         .delete(`${baseUrl}/areas/id`, {
           headers: {
-            area_id: id, 'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+            area_id: id,
+            Authorization: "Bearer " + localStorage.getItem("user-token"),
           },
         })
         .then((res) => {
@@ -183,7 +217,7 @@ export default {
         });
 
       console.log(this.form);
-    }
+    },
   },
   created() {
     this.getAreas();
@@ -193,5 +227,9 @@ export default {
 <style lang="scss" scoped>
 .card-body {
   min-height: 330px;
+}
+
+.tp-space {
+  margin-top: 50px;
 }
 </style>

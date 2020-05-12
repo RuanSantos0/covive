@@ -30,7 +30,15 @@
       <!-- 1st Hero Variation -->
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
-      <div class="row row-grid">
+      <div class="row">
+        <div class="col-md-8">
+          <base-input v-model="search.busca" placeholder="Busca..."></base-input>
+        </div>
+        <div class="col-md-4">
+          <base-button @click="busca()" type="Secondary">Buscar</base-button>
+        </div>
+      </div>
+      <div class="row row-grid tp-space">
         <div
           class="col-lg-4 pb-4"
           v-for="(card, index) in subareas"
@@ -134,6 +142,9 @@ export default {
       },
       subareas: [],
       areaAtual: [],
+      search: {
+        busca: "",
+      },
       form: {
         nome: "",
         descricao: "",
@@ -147,6 +158,25 @@ export default {
     },
   },
   methods: {
+    busca() {
+      if(this.search.busca === ""){
+        this.getSubareas();
+      }else{
+        const request = axios.create();
+      const baseUrl = "https://covive-api.herokuapp.com";
+      request
+        .get(`${baseUrl}/areas/id/subareas/customSearch`, {
+          headers: { area_id: this.$route.params.id , busca: this.search.busca },
+        })
+        .then((res) => {
+          this.subareas = res.data;
+          console.log("areas:", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }
+    },
     goToSubsubareas(card) {
       this.$router.push({
         name: "subsubareas",
@@ -194,7 +224,7 @@ export default {
         .post(`${baseUrl}/areas/id/subareas`, this.form, {
           headers: {
             area_id: this.$route.params.id,
-            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+            Authorization: "Bearer " + localStorage.getItem("user-token"),
           },
         })
         .then((res) => {
@@ -215,7 +245,7 @@ export default {
           headers: {
             area_id: this.$route.params.id,
             subarea_id: id,
-            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+            Authorization: "Bearer " + localStorage.getItem("user-token"),
           },
         })
         .then((res) => {
@@ -232,13 +262,16 @@ export default {
     this.getSubareas();
     this.getAreaAtual();
   },
-  mounted(){
+  mounted() {
     console.log(this.$route.params);
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
 .card-body {
   min-height: 330px;
+}
+.tp-space {
+  margin-top: 50px;
 }
 </style>

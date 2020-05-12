@@ -32,7 +32,18 @@
       <!-- 1st Hero Variation -->
     </div>
     <section class="section container section-lg pt-lg-0 mt--200">
-      <div v-show="subsubareas.length > 0" class="row row-grid">
+      <div class="row">
+        <div class="col-md-8">
+          <base-input
+            v-model="search.busca"
+            placeholder="Busca..."
+          ></base-input>
+        </div>
+        <div class="col-md-4">
+          <base-button @click="busca()" type="Secondary">Buscar</base-button>
+        </div>
+      </div>
+      <div v-show="subsubareas.length > 0" class="row row-grid tp-space">
         <div
           class="col-lg-4 pb-4"
           v-for="(card, index) in subsubareas"
@@ -138,24 +149,49 @@ export default {
       },
       subsubareas: [],
       subAreaAtual: [{ nome: "", descricao: "" }],
+      search: {
+        busca: "",
+      },
       form: {
         nome: "",
         descricao: "",
       },
     };
   },
-  
+
   computed: {
     showButtonSave() {
       let res = localStorage.getItem("user-token");
       return !!res;
     },
   },
-  updated(){
-    console.log("nome:",this.subAreaAtual.nome)
-    console.log("nome:",this.subAreaAtual.descricao)
+  updated() {
+    console.log("nome:", this.subAreaAtual.nome);
+    console.log("nome:", this.subAreaAtual.descricao);
   },
   methods: {
+    busca() {
+      if (this.search.busca === "") {
+        this.getSubsubareas();
+      } else {
+        const request = axios.create();
+        const baseUrl = "https://covive-api.herokuapp.com";
+        request
+          .get(`${baseUrl}/subareas/id/subsubareas/customSearch`, {
+            headers: {
+              subarea_id: this.$route.params.id,
+              busca: this.search.busca,
+            },
+          })
+          .then((res) => {
+            this.subsubareas = res.data;
+            console.log("areas:", res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
     goToFormularios(card) {
       this.$router.push({
         name: "formularios",
@@ -206,7 +242,7 @@ export default {
         .post(`${baseUrl}/subareas/id/subsubareas`, this.form, {
           headers: {
             subarea_id: this.$route.params.id,
-            'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+            Authorization: "Bearer " + localStorage.getItem("user-token"),
           },
         })
         .then((res) => {
@@ -227,7 +263,7 @@ export default {
           headers: {
             subarea_id: this.$route.params.id,
             subsubarea_id: id,
-           'Authorization': 'Bearer ' + localStorage.getItem("user-token"),
+            Authorization: "Bearer " + localStorage.getItem("user-token"),
           },
         })
         .then((res) => {
@@ -252,9 +288,12 @@ export default {
   min-height: 330px;
 }
 
-.img-search{
+.img-search {
   height: 200px;
   width: 200px;
 }
 
+.tp-space {
+  margin-top: 50px;
+}
 </style>
