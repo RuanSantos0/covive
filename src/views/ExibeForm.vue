@@ -18,7 +18,9 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">{{formularioAtual.nome}}</h1>
+                <h1 class="display-3  text-white">
+                  {{ formularioAtual.nome }}
+                </h1>
               </div>
             </div>
           </div>
@@ -26,7 +28,17 @@
       </section>
       <!-- 1st Hero Variation -->
       <section class="section container section-lg pt-lg-0 mt--200 px-0 ">
-        
+        <div class="row">
+          <div class="col-md-8">
+            <base-input
+              v-model="search.busca"
+              placeholder="Busca..."
+            ></base-input>
+          </div>
+          <div class="col-md-4">
+            <base-button @click="busca()" type="Secondary">Buscar</base-button>
+          </div>
+        </div>
         <!-- <div v-for="(question, index) in questions" :key="index" class="page-cards col-md-4 col-sm-12 col-12">
           <a href="#" target="_blank" rel="noopener noreferrer">
             <img :src="require(`../assets/img/${item.src}`)" />
@@ -35,13 +47,16 @@
           <p class="text-center">{{item.description}}</p>
         </div> -->
 
-
-        <div v-for="(question, index) in questions" :key="index" class="row row-grid mb-2">
+        <div
+          v-for="(question, index) in questions"
+          :key="index"
+          class="row row-grid mb-2 tp-space"
+        >
           <div class="col-12">
             <base-question readonly v-model="questions[index]"></base-question>
           </div>
         </div>
-                <div class="row row-grid">
+        <div class="row row-grid">
           <div class="col-12">
             <base-button type="warning" @click="modal.isOpen = true">
               Novas informações
@@ -52,8 +67,18 @@
     </div>
     <!--  -->
     <div class="col-md-6 col-sm-12 col-12">
-      <modal :show.sync="modal.isOpen" body-classes="p-0" modal-classes="modal-dialog-centered modal-sm" >
-        <card type="secondary" shadow header-classes="bg-white pb-5" body-classes="px-lg-5 py-lg-5" class="border-0" >
+      <modal
+        :show.sync="modal.isOpen"
+        body-classes="p-0"
+        modal-classes="modal-dialog-centered modal-sm"
+      >
+        <card
+          type="secondary"
+          shadow
+          header-classes="bg-white pb-5"
+          body-classes="px-lg-5 py-lg-5"
+          class="border-0"
+        >
           <div>
             <div class="text-left mb-3">
               <h5>Nova Pergunta</h5>
@@ -67,17 +92,30 @@
                 placeholder="Descrição da Pergunta"
                 v-model="currentQuestion.descricao"
               ></base-input>
-              <select v-if="!currentQuestion.descricao" disabled="disabled" class="form-control custom-select without-border">
+              <select
+                v-if="!currentQuestion.descricao"
+                disabled="disabled"
+                class="form-control custom-select without-border"
+              >
                 <option disabled selected>Tipo da Pergunta</option>
               </select>
-              <select v-else v-model="currentQuestion.tipo" placeholder="Asdasd" class="form-control custom-select without-border custom-margin">
+              <select
+                v-else
+                v-model="currentQuestion.tipo"
+                placeholder="Asdasd"
+                class="form-control custom-select without-border custom-margin"
+              >
                 <option disabled selected>Tipo da Pergunta</option>
                 <option value="texto">Texto</option>
                 <option value="opcoes">Multipla escolha</option>
               </select>
             </form>
-            <base-button type="danger" class="my-4" @click="cancel" >Cancelar</base-button>
-            <base-button type="primary" class="my-4" @click="newQuestion">Salvar</base-button>
+            <base-button type="danger" class="my-4" @click="cancel"
+              >Cancelar</base-button
+            >
+            <base-button type="primary" class="my-4" @click="newQuestion"
+              >Salvar</base-button
+            >
           </template>
         </card>
       </modal>
@@ -87,46 +125,78 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
-import BaseQuestion from "./components/BaseQuestion.vue"
-import axios from "axios"
+import BaseQuestion from "./components/BaseQuestion.vue";
+import axios from "axios";
 export default {
   components: {
     Modal,
-    BaseQuestion
+    BaseQuestion,
   },
-  data () {
+  data() {
     return {
+      search: {
+        busca: "",
+      },
       modal: {
         isOpen: false,
         options: [],
-        option: '',
-        newOption: ''
+        option: "",
+        newOption: "",
       },
       formulario: {
-        nome: ""
+        nome: "",
       },
       currentQuestion: {
-        descricao: '',
-        tipo: '',
-        opcao: '',
-        valor: '',
-        formulario_id: 1
+        descricao: "",
+        tipo: "",
+        opcao: "",
+        valor: "",
+        formulario_id: 1,
       },
       questions: [],
-      formularioAtual: [{ nome: ""}],
-    }
+      formularioAtual: [{ nome: "" }],
+    };
   },
-  mounted () {
-    this.getFormularioAtual()
+  mounted() {
+    this.getFormularioAtual();
     console.log("Params", this.$route.params);
-    axios.get('https://covive-api.herokuapp.com/formularios/id/perguntas', { headers: { formulario_id: this.$route.params.id } }).then(
-      res => {
-        this.questions = res.data
-        console.log(res.data)
-      }
-    )
+    this.getPerguntas();
+
   },
   methods: {
+    busca() {
+      this.questions = []
+      if (this.search.busca === "") {
+        this.getPerguntas();
+      } else {
+        const request = axios.create();
+        const baseUrl = "https://covive-api.herokuapp.com";
+        request
+          .get(`${baseUrl}/formularios/id/perguntas/customSearch`, {
+            headers: {
+              formulario_id: this.$route.params.id,
+              busca: this.search.busca,
+            },
+          })
+          .then((res) => {
+            this.questions = res.data;
+            console.log("areas:", res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+        getPerguntas(){
+      axios
+        .get("https://covive-api.herokuapp.com/formularios/id/perguntas", {
+          headers: { formulario_id: this.$route.params.id },
+        })
+        .then((res) => {
+          this.questions = res.data;
+          console.log(res.data);
+        });
+    },
     getFormularioAtual() {
       const request = axios.create();
       const baseUrl = "https://covive-api.herokuapp.com";
@@ -145,23 +215,29 @@ export default {
           console.log(err, "error");
         });
     },
-    addNewOption () {
-      if ( this.modal.newOption ) {
-        this.modal.options.push(this.modal.newOption)
-        this.modal.newOption = ''
+    addNewOption() {
+      if (this.modal.newOption) {
+        this.modal.options.push(this.modal.newOption);
+        this.modal.newOption = "";
       }
     },
-    newQuestion () {
-      this.questions.push({...this.currentQuestion})
-      this.cancel()
+    newQuestion() {
+      this.questions.push({ ...this.currentQuestion });
+      this.cancel();
       console.log(this.questions);
     },
-    cancel () {
-      this.modal = { isOpen: false, options: [], option: '', newOption: '' },
-      this.currentQuestion = { descricao: '', tipo: '', opcao: '', valor: '', formulario_id: 1 }
-    }
-  }
-}
+    cancel() {
+      (this.modal = { isOpen: false, options: [], option: "", newOption: "" }),
+        (this.currentQuestion = {
+          descricao: "",
+          tipo: "",
+          opcao: "",
+          valor: "",
+          formulario_id: 1,
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -169,7 +245,7 @@ export default {
   border: none;
   // border-radius: 0px;
   box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
-  padding:  0.625rem 0.75rem
+  padding: 0.625rem 0.75rem;
 }
 
 .custom-margin {
@@ -192,18 +268,24 @@ export default {
 }
 
 ::-webkit-input-placeholder {
-   color: white;
+  color: white;
 }
- 
-:-moz-placeholder { /* Firefox 18- */
-   color: white;  
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: white;
 }
- 
-::-moz-placeholder {  /* Firefox 19+ */
-   color: white;  
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: white;
 }
- 
-:-ms-input-placeholder {  
-   color: white;  
+
+:-ms-input-placeholder {
+  color: white;
+}
+
+.tp-space {
+  margin-top: 50px;
 }
 </style>
